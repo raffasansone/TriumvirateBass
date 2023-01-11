@@ -8,7 +8,7 @@
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
       <FILE id="w4kWi6" name="triumvirate_on.png" compile="0" resource="1"
-            file="../../Users/jorda/OneDrive/Immagini/Triumvirate/triumvirate_on.png"/>
+            file="./Resources/triumvirate_on.png"/>
     </GROUP>
     <GROUP id="{4AEC37ED-FA9D-BD0F-D500-BAAA94C81BD0}" name="Source">
       <FILE id="YJagnu" name="InOutGainKnob.cpp" compile="1" resource="0"
@@ -91,4 +91,7 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>
