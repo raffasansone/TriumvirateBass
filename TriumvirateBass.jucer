@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ysdfFp" name="TriumvirateBass" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              cppLanguageStandard="17" companyWebsite="www.raffaelesansone.com"
+              pluginManufacturer="raffasansone" bundleIdentifier="com.raffasansone.TriumvirateBass"
+              aaxIdentifier="com.raffasansone.TriumvirateBass" pluginVST3Category="Distortion">
+  <MAINGROUP id="iexqZ3" name="TriumvirateBass">
+    <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
+      <FILE id="w4kWi6" name="triumvirate_on.png" compile="0" resource="1"
+            file="../../Users/jorda/OneDrive/Immagini/Triumvirate/triumvirate_on.png"/>
+    </GROUP>
+    <GROUP id="{4AEC37ED-FA9D-BD0F-D500-BAAA94C81BD0}" name="Source">
+      <FILE id="YJagnu" name="InOutGainKnob.cpp" compile="1" resource="0"
+            file="Source/InOutGainKnob.cpp"/>
+      <FILE id="Gy5pHQ" name="InOutGainKnob.h" compile="0" resource="0" file="Source/InOutGainKnob.h"/>
+      <FILE id="QB9Ya4" name="CustomGainKnob.cpp" compile="1" resource="0"
+            file="Source/CustomGainKnob.cpp"/>
+      <FILE id="Y0M9eI" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="ZjWYhZ" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="DRJSz7" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="wBKaYY" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="M3FSHy" name="CustomGainKnob.h" compile="0" resource="0"
+            file="Source/CustomGainKnob.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="TriumvirateBass"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="TriumvirateBass"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="ff_meters" path="."/>
+      </MODULEPATHS>
+    </VS2019>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_core" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:\Users\jorda\JUCE\modules"/>
+        <MODULEPATH id="juce_dsp" path="../../Users/jorda/JUCE/modules"/>
+        <MODULEPATH id="ff_meters" path="."/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="ff_meters" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
