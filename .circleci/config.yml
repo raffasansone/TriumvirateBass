@@ -30,15 +30,27 @@ jobs:
             command: xcodebuild -project Builds/MacOSX/TriumvirateBass.xcodeproj -alltargets -parallelizeTargets -configuration Release build
       
       - run:
-            name: Package App
-            command: tar -cvzf TriumvirateBass.tar Users/distiller/project/Builds/MacOSX/build/Release/TriumvirateBass.app  
+            name: List Build Directories
+            command: ls -R /Users/distiller/project/Builds/MacOSX/
+                && ls -R /Users/distiller/Library/Audio/Plug-Ins/
+      
+      - run:
+            name: Package Artifacts
+            command: tar -cvzf TriumvirateBass_Standalone.tar /Users/distiller/project/Builds/MacOSX/build/Release/TriumvirateBass.app
+                && tar -cvzf TriumvirateBass_VST3.tar /Users/distiller/Library/Audio/Plug-Ins/VST3/TriumvirateBass.vst3
+                && tar -cvzf TriumvirateBass_AU.tar /Users/distiller/Library/Audio/Plug-Ins/Components/TriumvirateBass.component
       
       - store_artifacts: 
-            path: TriumvirateBass.tar
+            path: TriumvirateBass_Standalone.tar
             destination: TriumvirateBass_Standalone
       
       - store_artifacts:
-            path: /Users/distiller/Library/Audio/Plug-Ins
+            path: TriumvirateBass_VST3.tar
+            destination: TriumvirateBass_VST3
+
+      - store_artifacts:
+            path: TriumvirateBass_AU.tar
+            destination: TriumvirateBass_AU
           
 workflows:
   juce-build-workflow:
