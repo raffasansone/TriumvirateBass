@@ -15,7 +15,8 @@ jobs:
       xcode: 13.4.1
        
     steps:
-      - checkout    
+      - checkout
+      
       - run: 
             name: Sync and Update Submodules
             command: 
@@ -23,21 +24,21 @@ jobs:
                 && git submodule update --init --recursive
                 && ls ff_meters
                 && ls JUCE
+                
       - run: 
             name: XCode Build 
             command: xcodebuild -project Builds/MacOSX/TriumvirateBass.xcodeproj -alltargets -parallelizeTargets -configuration Release build
+      
       - run:
-            name: List Build Directory
-            command: ls -R /Users/distiller/project/Builds/MacOSX/
-                && ls -R /Users/distiller/Library/Audio/Plug-Ins/
-      - run:
-            name: Package .app
+            name: Package App
             command: tar -cvzf TriumvirateBass.tar Users/distiller/project/Builds/MacOSX/build/Release/TriumvirateBass.app  
+      
       - store_artifacts: 
             path: TriumvirateBass.tar
             destination: TriumvirateBass_Standalone
+      
       -store_artifacts:
-            path: /Users/distiller/Library/Audio/Plug-Ins/
+            path: /Users/distiller/Library/Audio/Plug-Ins
           
 workflows:
   juce-build-workflow:
