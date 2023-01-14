@@ -1,6 +1,6 @@
 version: 2.1
 executors:
-  my-custom-executor:
+  juce-docker-executor:
     docker:
       - image: cimg/base:stable
         auth:
@@ -8,6 +8,7 @@ executors:
           # visit app.circleci.com/settings/project/github/raffasansone/TriumvirateBass/environment-variables
           username: $DOCKER_HUB_USER
           password: $DOCKER_HUB_PASSWORD
+          
 jobs:
   macos-build:
     macos:
@@ -15,18 +16,23 @@ jobs:
        
     steps:
       - checkout
+      
       - run: 
-            name: Sync submodules
+            name: Sync and Update Submodules
             command: 
                 git submodule sync --recursive 
                 && git submodule update --init --recursive
                 && ls ff_meters
                 && ls JUCE
+                
       - run: 
             name: XCode Build 
             command: xcodebuild -project Builds/MacOSX/TriumvirateBass.xcodeproj -alltargets -parallelizeTargets -configuration Release build
-
+      
+      - store_artifacts:
+          path: /Users/distiller/project/Builds/MacOSX/build/Release
+          
 workflows:
-  my-custom-workflow:
+  juce-build-workflow:
     jobs:
       - macos-build
