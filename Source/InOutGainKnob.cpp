@@ -62,7 +62,7 @@ void InOutGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         g.fillPath(p);
 
         g.setFont(ioslider->getTextHeight());
-        auto text = ioslider->getDisplayString() << newLine << ioslider->getLabel();
+        auto text = ioslider->getDisplayString() << juce::newLine << ioslider->getLabel();
         auto strWidth = g.getCurrentFont().getStringWidth(text);
 
         r.setSize(strWidth, ioslider->getTextHeight());
