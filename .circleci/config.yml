@@ -15,7 +15,12 @@ jobs:
        
     steps:
       - checkout
-      - run: xcodebuild -project Builds/MacOSX/TriumvirateBass.xcodeproj -alltargets -parallelizeTargets -configuration Release build
+      - run: 
+            name: Sync submodules
+            command: git submodule sync --recursive && git submodule update --init --recursive
+      - run: 
+            name: XCode Build 
+            command: xcodebuild -project Builds/MacOSX/TriumvirateBass.xcodeproj -alltargets -parallelizeTargets -configuration Release build
 
 workflows:
   my-custom-workflow:
