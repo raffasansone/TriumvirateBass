@@ -62,7 +62,7 @@ void InOutGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         g.fillPath(p);
 
         g.setFont(ioslider->getTextHeight());
-        auto text = ioslider->getDisplayString() << juce::newLine << ioslider->getLabel();
+        juce::String text = ioslider->getDisplayString() << juce::newLine << ioslider->getLabel();
         auto strWidth = g.getCurrentFont().getStringWidth(text);
 
         r.setSize(strWidth, ioslider->getTextHeight());
@@ -115,7 +115,7 @@ juce::Rectangle<int> InOutGainSlider::getSliderBounds() const
     return r;
 }
 
-juce::String InOutGainSlider::getDisplayString() const
+juce::String InOutGainSlider::getDisplayString()
 {
 
     if (suffix.isNotEmpty())

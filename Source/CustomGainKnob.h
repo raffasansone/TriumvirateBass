@@ -39,7 +39,7 @@ struct CustomGainSlider : juce::Slider
     void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 14; };
-    juce::String getDisplayString() const;
+    virtual juce::String getDisplayString();
     bool isTextLabelToDraw() const { return showTextLabel; };
 
 private:

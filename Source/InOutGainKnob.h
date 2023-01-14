@@ -42,7 +42,7 @@ struct InOutGainSlider : juce::Slider
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 12; };
     juce::String getLabel() const {return label;};
-    juce::String getDisplayString() const;
+    juce::String getDisplayString();
 
 private:
     InOutGainLookAndFeel lnf;

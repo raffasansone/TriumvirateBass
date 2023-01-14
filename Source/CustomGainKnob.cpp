@@ -126,7 +126,7 @@ juce::Rectangle<int> CustomGainSlider::getSliderBounds() const
     return r;
 }
 
-juce::String CustomGainSlider::getDisplayString() const
+juce::String CustomGainSlider::getDisplayString()
 {
 
     if (suffix.isNotEmpty())
