@@ -37,7 +37,7 @@ jobs:
             path: TriumvirateBass.tar
             destination: TriumvirateBass_Standalone
       
-      -store_artifacts:
+      - store_artifacts:
             path: /Users/distiller/Library/Audio/Plug-Ins
           
 workflows:
