@@ -12,7 +12,8 @@ executors:
 jobs:
   macos-build:
     macos:
-      xcode: 13.4.1
+      #xcode: 13.4.1
+      xcode: 14.2.0
        
     steps:
       - checkout

@@ -4,7 +4,9 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               cppLanguageStandard="17" companyWebsite="www.raffaelesansone.com"
               pluginManufacturer="raffasansone" bundleIdentifier="com.raffasansone.TriumvirateBass"
-              aaxIdentifier="com.raffasansone.TriumvirateBass" pluginVST3Category="Distortion">
+              aaxIdentifier="com.raffasansone.TriumvirateBass" pluginVST3Category="Distortion"
+              version="0.0.4" companyName="raffasansone" pluginManufacturerCode="RFSN"
+              pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
       <FILE id="w4kWi6" name="triumvirate_on.png" compile="0" resource="1"

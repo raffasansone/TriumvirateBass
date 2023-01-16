@@ -8,7 +8,7 @@
 
 #pragma once
 
-#define BUILD_VERSION "v0.3-alpha"
+#define BUILD_VERSION "0.0.4"
 
 #include <JuceHeader.h>
 
