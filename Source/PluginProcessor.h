@@ -8,9 +8,9 @@
 
 #pragma once
 
-#define BUILD_VERSION "0.0.4"
-
 #include <JuceHeader.h>
+
+constexpr auto BUILD_VERSION = JucePlugin_VersionString;
 
 enum Slope
 {
@@ -23,13 +23,12 @@ enum Slope
 struct TriumvirateBassSettings
 {
     float input{ 0.0f }, output{ 0.0f };
-    float highPassFreq{ 0 }, lowPassFreq{ 0 }, midHighPassFreq{ 0 }, midLowPassFreq{ 0 };
+    float highPassFreq{ 600.f }, lowPassFreq{ 140.f }, midHighPassFreq{ 100.f }, midLowPassFreq{ 800.f };
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
     Slope lowPassSlope{ Slope::Slope_12 }, highPassSlope{ Slope::Slope_12 }, midLowPassSlope{ Slope::Slope_12 }, midHighPassSlope{Slope::Slope_12};
 };
 
-TriumvirateBassSettings getTriumvirateBassSettings(juce::AudioProcessorValueTreeState& apvts);
 
 //==============================================================================
 /**
@@ -82,14 +81,24 @@ public:
 
     foleys::LevelMeterSource& getInputLevelMeterSource();
     foleys::LevelMeterSource& getOutputLevelMeterSource();
+    
+    TriumvirateBassSettings getTriumvirateBassSettings();
+
+    void initialisePostLowBandLowPass();
+
+    void initialisePostMidBandLowPass();
 
     static constexpr float MINUS_INFINITY_DB{ -128.f };
 
 private:
 
+    TriumvirateBassSettings settings;
+
     juce::AudioBuffer<float> midBuffer, highBuffer;
-    float previousGain;
-    int isStereo = 0;
+    float previousInputGain, previousOutputGain;
+    bool isStereo = false;
+    bool distortionChanged = false;
+
     foleys::LevelMeterSource inputLevelMeterSource, outputLevelMeterSource;
 
     using Waveshaper = juce::dsp::WaveShaper<float, std::function<float (float)>>;

@@ -16,7 +16,7 @@
 //==============================================================================
 /**
 */
-class TriumvirateBassAudioProcessorEditor  : public juce::AudioProcessorEditor
+class TriumvirateBassAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
     TriumvirateBassAudioProcessorEditor (TriumvirateBassAudioProcessor&);

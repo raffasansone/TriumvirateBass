@@ -6,18 +6,16 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "CustomGainKnob.h"
 
 //==============================================================================
 TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (TriumvirateBassAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     versionLabel("version", BUILD_VERSION),
     inputLevelMeter(foleys::LevelMeter::Minimal),
-    inputGainSlider(* audioProcessor.apvts.getParameter("inputGain"), "Input", "dB"),
+    inputGainSlider(*audioProcessor.apvts.getParameter("inputGain"), "Input", "dB"),
     lowVolumeSlider(*audioProcessor.apvts.getParameter("lowVolume"), "dB"),
-    lowGainSlider(* audioProcessor.apvts.getParameter("lowPreampGain"), ""),
+    lowGainSlider(*audioProcessor.apvts.getParameter("lowPreampGain"), ""),
     midVolumeSlider(*audioProcessor.apvts.getParameter("midVolume"), "dB"),
     midGainSlider(*audioProcessor.apvts.getParameter("midPreampGain"), ""),
     highVolumeSlider(*audioProcessor.apvts.getParameter("highVolume"), "dB"),

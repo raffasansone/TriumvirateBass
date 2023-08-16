@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "PluginProcessor.h"
+
 struct CustomGainLookAndFeel : juce::LookAndFeel_V4
 {
     void drawRotarySlider(juce::Graphics&,
@@ -22,6 +24,8 @@ struct CustomGainLookAndFeel : juce::LookAndFeel_V4
 
 struct CustomGainSlider : juce::Slider
 {
+    CustomGainSlider() = delete;
+
     CustomGainSlider(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, bool showTextLabel = false) : juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,
         juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap),
