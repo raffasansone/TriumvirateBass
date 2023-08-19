@@ -91,22 +91,16 @@ public:
     static constexpr float MINUS_INFINITY_DB{ -128.f };
 
 private:
+    foleys::LevelMeterSource inputLevelMeterSource, outputLevelMeterSource;
 
     TriumvirateBassSettings settings;
 
     juce::AudioBuffer<float> midBuffer, highBuffer;
     float previousInputGain, previousOutputGain;
-    bool isStereo = false;
     bool distortionChanged = false;
-
-    foleys::LevelMeterSource inputLevelMeterSource, outputLevelMeterSource;
-
     using Waveshaper = juce::dsp::WaveShaper<float, std::function<float (float)>>;
-
     using Filter = juce::dsp::IIR::Filter<float>;
-    //Alias for Lowpass and Highpass filter up to 4th order
-    using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
-    
+    using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>; // Filter up to 4th order
     using Gain = juce::dsp::Gain<float>;
 
     using LowChain = juce::dsp::ProcessorChain<CutFilter, Gain, Waveshaper, Filter, Gain>;
@@ -145,13 +139,10 @@ private:
         HighPostGain
     };
 
-    using Coefficients = Filter::CoefficientsPtr;
-    static void updateCoefficients(Coefficients& old, const Coefficients& replacements);
-    
     template<int Index, typename ChainType, typename CoefficientType>
-    void update(ChainType& chain, const CoefficientType& coefficients)
+    void updateCutFilterCoefficients(ChainType& chain, const CoefficientType& coefficients)
     {
-        updateCoefficients(chain.template get<Index>().coefficients, coefficients[Index]);
+        *(chain.template get<Index>().coefficients) = *(coefficients[Index]);
         chain.template setBypassed<Index>(false);
     }
 
@@ -169,20 +160,20 @@ private:
         {
         case Slope_48:
         {
-            update<3>(chain, coefficients);
+            updateCutFilterCoefficients<3>(chain, coefficients);
         }
 
         case Slope_36:
         {
-            update<2>(chain, coefficients);
+            updateCutFilterCoefficients<2>(chain, coefficients);
         }
         case Slope_24:
         {
-            update<1>(chain, coefficients);
+            updateCutFilterCoefficients<1>(chain, coefficients);
         }
         case Slope_12:
         {
-            update<0>(chain, coefficients);
+            updateCutFilterCoefficients<0>(chain, coefficients);
         }
         }
     }
