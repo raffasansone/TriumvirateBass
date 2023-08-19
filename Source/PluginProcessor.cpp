@@ -101,21 +101,12 @@ void TriumvirateBassAudioProcessor::prepareToPlay (double sampleRate, int sample
     spec.numChannels = 1;
     spec.sampleRate = sampleRate;
 
-    if (getTotalNumInputChannels() == 2)
-    {
-        isStereo = 1;
-    }
-    else
-    {
-        isStereo = 0;
-    }
-
     // this prepares the meterSource to measure all output blocks and average over 100ms to allow smooth movements
     inputLevelMeterSource.resize(getTotalNumOutputChannels(), sampleRate * 0.1 / samplesPerBlock);
     outputLevelMeterSource.resize(getTotalNumOutputChannels(), sampleRate * 0.1 / samplesPerBlock);
 
     auto chainSettings = getTriumvirateBassSettings(apvts);
-    previousGain = chainSettings.input;
+    previousInputGain = chainSettings.input;
 
     lowLeftChain.prepare(spec);
     lowRightChain.prepare(spec);
@@ -193,7 +184,7 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
     auto chainSettings = getTriumvirateBassSettings(apvts);
 
-    if (chainSettings.input == previousGain)
+    if (chainSettings.input == previousInputGain)
     {
         buffer.applyGain(juce::Decibels::decibelsToGain(chainSettings.input));
     }
@@ -203,9 +194,9 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
             .applyGainRamp(
                 0, 
                 buffer.getNumSamples(), 
-                juce::Decibels::decibelsToGain(previousGain), 
+                juce::Decibels::decibelsToGain(previousInputGain), 
                 juce::Decibels::decibelsToGain(chainSettings.input));
-        previousGain = chainSettings.input;
+        previousInputGain = chainSettings.input;
     }
 
     inputLevelMeterSource.measureBlock(buffer);
@@ -313,7 +304,7 @@ void TriumvirateBassAudioProcessor::setStateInformation (const void* data, int s
     }
 }
 
-TriumvirateBassSettings getTriumvirateBassSettings(juce::AudioProcessorValueTreeState& apvts)
+TriumvirateBassSettings TriumvirateBassAudioProcessor::getTriumvirateBassSettings(juce::AudioProcessorValueTreeState& apvts)
 {
     TriumvirateBassSettings settings;
 
@@ -335,11 +326,6 @@ TriumvirateBassSettings getTriumvirateBassSettings(juce::AudioProcessorValueTree
     settings.midLowPassSlope = Slope_12; // static_cast<Slope>(apvts.getRawParameterValue("midLowPassSlope")->load());
 
     return settings;
-}
-
-void TriumvirateBassAudioProcessor::updateCoefficients(Coefficients& old, const Coefficients& replacements)
-{
-    *old = *replacements;
 }
 
 void TriumvirateBassAudioProcessor::updateHighPassFilters(const TriumvirateBassSettings& chainSettings)

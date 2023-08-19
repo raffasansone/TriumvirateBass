@@ -8,9 +8,7 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
 #include "CustomGainKnob.h"
-#include <stdbool.h>
 
 void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
     int x,

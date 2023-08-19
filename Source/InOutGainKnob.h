@@ -24,6 +24,8 @@ struct InOutGainLookAndFeel : juce::LookAndFeel_V4
 
 struct InOutGainSlider : juce::Slider
 {
+    InOutGainSlider() = delete;
+
     InOutGainSlider(juce::RangedAudioParameter& rap, const juce::String& label, const juce::String& unitSuffix) : juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,
         juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap),

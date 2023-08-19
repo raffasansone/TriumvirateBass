@@ -8,7 +8,6 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
 #include "InOutGainKnob.h"
 
 void InOutGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
