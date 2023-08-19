@@ -23,13 +23,12 @@ enum Slope
 struct TriumvirateBassSettings
 {
     float input{ 0.0f }, output{ 0.0f };
-    float highPassFreq{ 0 }, lowPassFreq{ 0 }, midHighPassFreq{ 0 }, midLowPassFreq{ 0 };
+    float highPassFreq{ 600.f }, lowPassFreq{ 140.f }, midHighPassFreq{ 100.f }, midLowPassFreq{ 800.f };
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
     Slope lowPassSlope{ Slope::Slope_12 }, highPassSlope{ Slope::Slope_12 }, midLowPassSlope{ Slope::Slope_12 }, midHighPassSlope{Slope::Slope_12};
 };
 
-TriumvirateBassSettings getTriumvirateBassSettings(juce::AudioProcessorValueTreeState& apvts);
 
 //==============================================================================
 /**
@@ -83,7 +82,7 @@ public:
     foleys::LevelMeterSource& getInputLevelMeterSource();
     foleys::LevelMeterSource& getOutputLevelMeterSource();
     
-    TriumvirateBassSettings getTriumvirateBassSettings(juce::AudioProcessorValueTreeState& apvts);
+    TriumvirateBassSettings getTriumvirateBassSettings();
 
     void initialisePostLowBandLowPass();
 
