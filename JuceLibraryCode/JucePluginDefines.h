@@ -155,7 +155,7 @@
  #define JucePlugin_ARAFactoryID           "com.raffasansone.TriumvirateBass.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.raffasansone.TriumvirateBass.aradocumentarchive.0.0.4"
+ #define JucePlugin_ARADocumentArchiveID   "com.raffasansone.TriumvirateBass.aradocumentarchive.0.0.5"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""
