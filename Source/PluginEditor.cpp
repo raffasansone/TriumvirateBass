@@ -21,6 +21,7 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (Triumv
     highVolumeSlider(*audioProcessor.apvts.getParameter("highVolume"), "dB", TriumvirateBassAudioProcessor::MINUS_INFINITY_DB),
     highGainSlider(*audioProcessor.apvts.getParameter("highPreampGain"), "", TriumvirateBassAudioProcessor::MINUS_INFINITY_DB),
     outputGainSlider(*audioProcessor.apvts.getParameter("outputGain"),"Output", "dB"),
+    bypassButton("bypassButton"),
     inputGainSliderAttachment(audioProcessor.apvts,"inputGain", inputGainSlider),
     lowVolumeSliderAttachment(audioProcessor.apvts,"lowVolume",lowVolumeSlider),
     lowGainSliderAttachment(audioProcessor.apvts,"lowPreampGain",lowGainSlider),
@@ -29,21 +30,22 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (Triumv
     highVolumeSliderAttachment(audioProcessor.apvts,"highVolume",highVolumeSlider),
     highGainSliderAttachment(audioProcessor.apvts,"highPreampGain",highGainSlider),
     outputLevelMeter(foleys::LevelMeter::Minimal),
-    outputGainSliderAttachment(audioProcessor.apvts,"outputGain",outputGainSlider)
+    outputGainSliderAttachment(audioProcessor.apvts,"outputGain",outputGainSlider),
+    bypassButtonAttachment(*audioProcessor.apvts.getParameter("bypass"),bypassButton),
+    ledOff(juce::Image()),
+    ledOn(juce::Image())
 {
     
     // Initialize foley Level Meter Look n Feel
-    levelMeterLnF.setColour(foleys::LevelMeter::lmMeterGradientLowColour, juce::Colours::white);
-    inputLevelMeter.setLookAndFeel(&levelMeterLnF);
-    outputLevelMeter.setLookAndFeel(&levelMeterLnF);
-    inputLevelMeter.setMeterSource(&p.getInputLevelMeterSource());
-    outputLevelMeter.setMeterSource(&p.getOutputLevelMeterSource());
+    initialiseLevelMeters();
 
     // Initialize internal components
     for (auto* comp : getComponents())
     {
         addAndMakeVisible(comp);
     }
+
+    initialiseBypassButton();
 
     setSize (800, 520);
     setResizable(false, false);
@@ -63,6 +65,40 @@ void TriumvirateBassAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawImageAt(background, 0, 0);
 
     getLookAndFeel().setColour(juce::Slider::thumbColourId, juce::Colours::white);
+}
+
+void TriumvirateBassAudioProcessorEditor::initialiseLevelMeters() 
+{
+    levelMeterLnF.setColour(foleys::LevelMeter::lmMeterGradientLowColour, juce::Colours::white);
+    inputLevelMeter.setLookAndFeel(&levelMeterLnF);
+    outputLevelMeter.setLookAndFeel(&levelMeterLnF);
+    inputLevelMeter.setMeterSource(&audioProcessor.getInputLevelMeterSource());
+    outputLevelMeter.setMeterSource(&audioProcessor.getOutputLevelMeterSource());
+}
+
+void TriumvirateBassAudioProcessorEditor::initialiseBypassButton() 
+{
+    ledOff = juce::ImageCache::getFromMemory(BinaryData::led_off_png, BinaryData::led_off_pngSize);
+    ledOn = juce::ImageCache::getFromMemory(BinaryData::led_on_png, BinaryData::led_on_pngSize);
+    
+    bypassButton.setClickingTogglesState(true);
+    bypassButton.onClick = [this]() {paintBypassButton(); };
+
+    paintBypassButton();
+}
+
+void TriumvirateBassAudioProcessorEditor::paintBypassButton() 
+{
+    auto bounds = bypassButton.getBounds();
+
+    if (bypassButton.getToggleState()) {
+        bypassButton.setImages(true, false, true, ledOff, 1.f, juce::Colours::transparentWhite, ledOff, 1.f, juce::Colours::transparentWhite, ledOff, 1.f, juce::Colours::transparentWhite);
+    }
+    else {
+        bypassButton.setImages(true, false, true, ledOn, 1.f, juce::Colours::transparentWhite, ledOn, 1.f, juce::Colours::transparentWhite, ledOn, 1.f, juce::Colours::transparentWhite);
+    }
+
+    bypassButton.setBounds(bounds);
 }
 
 void TriumvirateBassAudioProcessorEditor::resized()
@@ -105,7 +141,10 @@ void TriumvirateBassAudioProcessorEditor::resized()
 
     auto highVolumeArea = highArea.removeFromBottom(highArea.getHeight() * 0.60); 
     auto highGainArea = highArea;
-    highGainArea.setPosition(highGainArea.getX(), highGainArea.getY() - 30);
+    highGainArea.setPosition(highGainArea.getX()-1, highGainArea.getY() - 30);
+
+    auto bypassButtonArea = bottomArea.removeFromTop(50);
+    bypassButtonArea.setPosition(122, 376);
 
     versionLabel.setBounds(versionArea);
 
@@ -123,6 +162,8 @@ void TriumvirateBassAudioProcessorEditor::resized()
 
     outputLevelMeter.setBounds(outputMeterArea);
     outputGainSlider.setBounds(outputArea);
+
+    bypassButton.setBounds(bypassButtonArea);
 }
 
 std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getComponents()
@@ -138,6 +179,7 @@ std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getComponents
         &midGainSlider, 
         &highGainSlider,
         &outputLevelMeter,
-        &outputGainSlider
+        &outputGainSlider,
+        &bypassButton
     };
 }

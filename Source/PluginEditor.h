@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "GraphicElements/CustomGainKnob.h"
 #include "GraphicElements/InOutGainKnob.h"
+//#include "GraphicElements/BypassButton.h"
 
 //==============================================================================
 /**
@@ -24,6 +25,9 @@ public:
 
     //==============================================================================
     void paint (juce::Graphics&) override;
+    void initialiseLevelMeters();
+    void initialiseBypassButton();
+    void paintBypassButton();
     void resized() override;
 
 private:
@@ -48,6 +52,9 @@ private:
         midGainSlider,
         highGainSlider;
 
+    juce::ImageButton bypassButton;
+    juce::Image ledOff, ledOn;
+
     using APVTS = juce::AudioProcessorValueTreeState;
     using SliderAttachment = APVTS::SliderAttachment;
 
@@ -60,6 +67,8 @@ private:
         midGainSliderAttachment,
         highGainSliderAttachment,
         outputGainSliderAttachment;
+
+    juce::ButtonParameterAttachment bypassButtonAttachment;
 
     std::vector<juce::Component*> getComponents();
 

@@ -27,6 +27,7 @@ struct TriumvirateBassSettings
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
     Slope lowPassSlope{ Slope::Slope_12 }, highPassSlope{ Slope::Slope_12 }, midLowPassSlope{ Slope::Slope_12 }, midHighPassSlope{Slope::Slope_12};
+    bool bypass{ false };
 };
 
 
@@ -82,18 +83,13 @@ public:
     foleys::LevelMeterSource& getInputLevelMeterSource();
     foleys::LevelMeterSource& getOutputLevelMeterSource();
     
-    TriumvirateBassSettings getTriumvirateBassSettings();
-
-    void initialisePostLowBandLowPass();
-
-    void initialisePostMidBandLowPass();
-
     static constexpr float MINUS_INFINITY_DB{ -128.f };
 
 private:
     foleys::LevelMeterSource inputLevelMeterSource, outputLevelMeterSource;
 
     TriumvirateBassSettings settings;
+    TriumvirateBassSettings getTriumvirateBassSettings();
 
     juce::AudioBuffer<float> midBuffer, highBuffer;
     float previousInputGain, previousOutputGain;
@@ -178,12 +174,12 @@ private:
         }
     }
 
+    void initialisePostLowBandLowPass();
+    void initialisePostMidBandLowPass();
     void updateHighPassFilters(const TriumvirateBassSettings& chainSettings);
     void updateBandPassFilters(const TriumvirateBassSettings& chainSettings);
     void updateLowPassFilters(const TriumvirateBassSettings& chainSettings);
-
     void updateFilters();
-
     void updateDistortions();
 
     //==============================================================================

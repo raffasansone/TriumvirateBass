@@ -129,10 +129,12 @@ juce::String CustomGainSlider::getDisplayString()
 
     if (suffix.isNotEmpty())
     {
-        if (getValue() == minusInfinityValue) {
+        if (getValue() == minusInfinityValue) 
+        {
             return juce::String("-inf dB");
         }
-        else {
+        else 
+        {
             return juce::String(getValue(), 2) + juce::String(" dB");
         }
     }

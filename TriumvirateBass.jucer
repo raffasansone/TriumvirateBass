@@ -9,6 +9,8 @@
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
+      <FILE id="CmcLU0" name="led_off.png" compile="0" resource="1" file="Resources/led_off.png"/>
+      <FILE id="dXD7zn" name="led_on.png" compile="0" resource="1" file="Resources/led_on.png"/>
       <FILE id="w4kWi6" name="triumvirate_on.png" compile="0" resource="1"
             file="./Resources/triumvirate_on.png"/>
     </GROUP>
