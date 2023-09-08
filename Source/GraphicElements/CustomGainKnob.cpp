@@ -25,26 +25,26 @@ void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
     auto bounds = Rectangle<float>(x, y, width, height);
 
     //Knob
-    g.setGradientFill(ColourGradient(
-        Colour(15u, 15u, 15u),
-        10.f,
-        0.f,
-        Colours::black,
-        bounds.getBottomRight().getX() - 10.f,
-        bounds.getBottomRight().getY(),
-        false));
-    g.fillEllipse(bounds);
+    //g.setGradientFill(ColourGradient(
+    //    Colour(15u, 15u, 15u),
+    //    10.f,
+    //    0.f,
+    //    Colours::black,
+    //    bounds.getBottomRight().getX() - 10.f,
+    //    bounds.getBottomRight().getY(),
+    //    false));
+    //g.fillEllipse(bounds);
 
     //Knob border
-    g.setGradientFill(ColourGradient(
-        Colours::dimgrey,
-        10.f,
-        0.f,
-        Colours::black,
-        bounds.getCentre().getX(),
-        bounds.getCentre().getY(),
-        false));
-    g.drawEllipse(bounds, 2.f);
+    //g.setGradientFill(ColourGradient(
+    //    Colours::dimgrey,
+    //    10.f,
+    //    0.f,
+    //    Colours::black,
+    //    bounds.getCentre().getX(),
+    //    bounds.getCentre().getY(),
+    //    false));
+    //g.drawEllipse(bounds, 2.f);
 
     if (auto* cgslider = dynamic_cast<CustomGainSlider*>(&slider))
     {
@@ -57,7 +57,7 @@ void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         r.setTop(bounds.getY());
         r.setBottom(center.getY() - center.getY() * 0.4f);
 
-        p.addRoundedRectangle(r, 2.f);
+        p.addRoundedRectangle(r, 1.f);
 
         jassert(rotaryStartAngle < rotaryEndAngle);
 

@@ -61,7 +61,8 @@ TriumvirateBassAudioProcessorEditor::~TriumvirateBassAudioProcessorEditor()
 //==============================================================================
 void TriumvirateBassAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    juce::Image background = juce::ImageCache::getFromMemory(BinaryData::triumvirate_on_png, BinaryData::triumvirate_on_pngSize);
+    using namespace juce;
+    juce::Image background = juce::ImageCache::getFromMemory(BinaryData::triumvirate_new_png, BinaryData::triumvirate_new_pngSize);
     g.drawImageAt(background, 0, 0);
 
     getLookAndFeel().setColour(juce::Slider::thumbColourId, juce::Colours::white);
@@ -78,8 +79,8 @@ void TriumvirateBassAudioProcessorEditor::initialiseLevelMeters()
 
 void TriumvirateBassAudioProcessorEditor::initialiseBypassButton() 
 {
-    ledOff = juce::ImageCache::getFromMemory(BinaryData::led_off_png, BinaryData::led_off_pngSize);
-    ledOn = juce::ImageCache::getFromMemory(BinaryData::led_on_png, BinaryData::led_on_pngSize);
+    ledOff = juce::ImageCache::getFromMemory(BinaryData::led_off_new_png, BinaryData::led_off_new_pngSize);
+    ledOn = juce::ImageCache::getFromMemory(BinaryData::led_on_new_png, BinaryData::led_on_new_pngSize);
     
     bypassButton.setClickingTogglesState(true);
     bypassButton.onClick = [this]() {paintBypassButton(); };
@@ -133,18 +134,40 @@ void TriumvirateBassAudioProcessorEditor::resized()
     auto highArea = bounds.removeFromLeft(bounds.getWidth() * 0.5);
     auto midArea = bounds;
 
-    auto lowVolumeArea = lowArea.removeFromTop(lowArea.getHeight() * 0.60);
-    auto lowGainArea = lowArea;
+    auto lowVolumeArea = lowArea.removeFromTop(177);
+    lowVolumeArea.setPosition(
+        114, 
+        90
+    );
+    auto lowGainArea = lowArea.removeFromBottom(130);
+    lowGainArea.setPosition(
+        122,
+        278
+    );
 
-    auto midVolumeArea = midArea.removeFromTop(midArea.getHeight() * 0.60);
-    auto midGainArea = midArea;
+    auto midVolumeArea = midArea.removeFromTop(178);
+    midVolumeArea.setPosition(
+        500,
+        91
+    );
+    auto midGainArea = midArea.removeFromBottom(126);
+    midGainArea.setPosition(
+        494,
+        280
+    );
 
-    auto highVolumeArea = highArea.removeFromBottom(highArea.getHeight() * 0.60); 
-    auto highGainArea = highArea;
-    highGainArea.setPosition(highGainArea.getX()-1, highGainArea.getY() - 30);
+    auto highVolumeArea = highArea.removeFromBottom(179);
+    highVolumeArea.setPosition(
+        305,
+        215
+    );
+    auto highGainArea = highArea.removeFromTop(126);
+    highGainArea.setPosition(
+        301,
+        50);
 
     auto bypassButtonArea = bottomArea.removeFromTop(50);
-    bypassButtonArea.setPosition(122, 376);
+    bypassButtonArea.setPosition(121, 369);
 
     versionLabel.setBounds(versionArea);
 

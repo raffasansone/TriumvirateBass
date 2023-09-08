@@ -9,10 +9,10 @@
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
-      <FILE id="CmcLU0" name="led_off.png" compile="0" resource="1" file="Resources/led_off.png"/>
-      <FILE id="dXD7zn" name="led_on.png" compile="0" resource="1" file="Resources/led_on.png"/>
-      <FILE id="w4kWi6" name="triumvirate_on.png" compile="0" resource="1"
-            file="./Resources/triumvirate_on.png"/>
+      <FILE id="ls3LHo" name="led_off_new.png" compile="0" resource="1" file="Resources/led_off_new.png"/>
+      <FILE id="Bu6bfR" name="led_on_new.png" compile="0" resource="1" file="Resources/led_on_new.png"/>
+      <FILE id="GVtWuc" name="triumvirate_new.png" compile="0" resource="1"
+            file="Resources/triumvirate_new.png"/>
     </GROUP>
     <GROUP id="{4AEC37ED-FA9D-BD0F-D500-BAAA94C81BD0}" name="Source">
       <GROUP id="{BA8F2BFD-85C6-669D-F4A5-24EC50CBBB7C}" name="GraphicElements">
