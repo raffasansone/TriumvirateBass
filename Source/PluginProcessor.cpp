@@ -22,6 +22,10 @@ TriumvirateBassAudioProcessor::TriumvirateBassAudioProcessor()
                        )
 #endif
 {
+    apvts.state.setProperty(service::PresetManager::presetNameProperty, "", nullptr);
+    apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
+
+    presetManager = std::make_unique<service::PresetManager>(apvts);
 }
 
 TriumvirateBassAudioProcessor::~TriumvirateBassAudioProcessor()

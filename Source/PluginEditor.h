@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "GraphicElements/CustomGainKnob.h"
 #include "GraphicElements/InOutGainKnob.h"
+#include "PresetGui/PresetPanel.h"
 //#include "GraphicElements/BypassButton.h"
 
 //==============================================================================
@@ -34,6 +35,8 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     TriumvirateBassAudioProcessor& audioProcessor;
+
+    gui::PresetPanel presetPanel;
 
     juce::Label versionLabel;
 

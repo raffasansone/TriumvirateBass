@@ -33,7 +33,8 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (Triumv
     outputGainSliderAttachment(audioProcessor.apvts,"outputGain",outputGainSlider),
     bypassButtonAttachment(*audioProcessor.apvts.getParameter("bypass"),bypassButton),
     ledOff(juce::Image()),
-    ledOn(juce::Image())
+    ledOn(juce::Image()),
+    presetPanel(p.getPresetManager())
 {
     
     // Initialize foley Level Meter Look n Feel
@@ -107,6 +108,7 @@ void TriumvirateBassAudioProcessorEditor::resized()
     auto bounds = getLocalBounds();
 
     auto presetArea = bounds.removeFromTop(bounds.getHeight() * 0.169);
+    auto presetPanelArea = presetArea.removeFromTop(45).removeFromRight(400);
 
     auto inputArea = bounds.removeFromLeft(120);
 
@@ -169,6 +171,8 @@ void TriumvirateBassAudioProcessorEditor::resized()
     auto bypassButtonArea = bottomArea.removeFromTop(50);
     bypassButtonArea.setPosition(121, 369);
 
+    presetPanel.setBounds(presetPanelArea);
+
     versionLabel.setBounds(versionArea);
 
     inputLevelMeter.setBounds(inputMeterArea);
@@ -193,6 +197,7 @@ std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getComponents
 {
     return {
         &versionLabel,
+        &presetPanel,
         &inputLevelMeter,
         &inputGainSlider,
         &lowVolumeSlider, 

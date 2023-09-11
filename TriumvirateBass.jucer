@@ -15,6 +15,14 @@
             file="Resources/triumvirate_new.png"/>
     </GROUP>
     <GROUP id="{4AEC37ED-FA9D-BD0F-D500-BAAA94C81BD0}" name="Source">
+      <GROUP id="{3B97DD22-BFB1-2B5F-6AA5-C7A939C0D2F4}" name="PresetGui">
+        <FILE id="baNAKF" name="PresetPanel.h" compile="0" resource="0" file="Source/PresetGui/PresetPanel.h"/>
+      </GROUP>
+      <GROUP id="{BE34BD5D-927F-0942-5056-DD02440AF098}" name="PresetService">
+        <FILE id="rEMxN5" name="PresetManager.cpp" compile="1" resource="0"
+              file="Source/PresetService/PresetManager.cpp"/>
+        <FILE id="VpnbDa" name="PresetManager.h" compile="0" resource="0" file="Source/PresetService/PresetManager.h"/>
+      </GROUP>
       <GROUP id="{BA8F2BFD-85C6-669D-F4A5-24EC50CBBB7C}" name="GraphicElements">
         <FILE id="Rpi6a9" name="CustomGainKnob.cpp" compile="1" resource="0"
               file="Source/GraphicElements/CustomGainKnob.cpp"/>

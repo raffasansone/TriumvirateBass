@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PresetService/PresetManager.h"
 
 constexpr auto BUILD_VERSION = JucePlugin_VersionString;
 
@@ -83,6 +84,8 @@ public:
     foleys::LevelMeterSource& getInputLevelMeterSource();
     foleys::LevelMeterSource& getOutputLevelMeterSource();
     
+    service::PresetManager& getPresetManager() { return *presetManager; }
+
     static constexpr float MINUS_INFINITY_DB{ -128.f };
 
 private:
@@ -90,6 +93,8 @@ private:
 
     TriumvirateBassSettings settings;
     TriumvirateBassSettings getTriumvirateBassSettings();
+
+    std::unique_ptr<service::PresetManager> presetManager;
 
     juce::AudioBuffer<float> midBuffer, highBuffer;
     float previousInputGain, previousOutputGain;
