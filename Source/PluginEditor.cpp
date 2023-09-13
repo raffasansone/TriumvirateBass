@@ -107,8 +107,9 @@ void TriumvirateBassAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds();
 
-    auto presetArea = bounds.removeFromTop(bounds.getHeight() * 0.169);
+    auto presetArea = bounds.removeFromTop(proportionOfHeight(0.169f));
     auto presetPanelArea = presetArea.removeFromTop(45).removeFromRight(400);
+    presetPanelArea.setPosition(presetPanelArea.getX(), presetPanelArea.getY() + 6);
 
     auto inputArea = bounds.removeFromLeft(120);
 
@@ -120,7 +121,7 @@ void TriumvirateBassAudioProcessorEditor::resized()
     inputMeterArea = inputMeterArea.removeFromTop(120);
 
     inputArea.setPosition(inputArea.getX() + 4, inputArea.getY());
-    inputMeterArea.setPosition(inputMeterArea.getX()+12,inputMeterArea.getCentreY()-64);
+    inputMeterArea.setPosition(inputMeterArea.getX() + 12, inputMeterArea.getCentreY() - 64);
 
     auto outputArea = bounds.removeFromRight(120);
     outputArea = outputArea.removeFromBottom(300);
@@ -130,43 +131,29 @@ void TriumvirateBassAudioProcessorEditor::resized()
     outputArea.setPosition(outputArea.getX() - 4, outputArea.getY());
     outputMeterArea.setPosition(outputMeterArea.getX() - 12, outputMeterArea.getCentreY() - 64);
 
-    auto bottomArea = bounds.removeFromBottom(bounds.getHeight() * 0.271);
+    auto bottomArea = bounds.removeFromBottom(proportionOfHeight(0.225f));
 
-    auto lowArea = bounds.removeFromLeft(bounds.getWidth() * 0.33);
-    auto highArea = bounds.removeFromLeft(bounds.getWidth() * 0.5);
+    auto lowArea = bounds.removeFromLeft(proportionOfWidth(0.231f));
+    auto highArea = bounds.removeFromLeft(proportionOfWidth(0.231f));
     auto midArea = bounds;
 
     auto lowVolumeArea = lowArea.removeFromTop(177);
-    lowVolumeArea.setPosition(
-        114, 
-        90
-    );
+    lowVolumeArea.setPosition(114, 90);
+
     auto lowGainArea = lowArea.removeFromBottom(130);
-    lowGainArea.setPosition(
-        122,
-        278
-    );
+    lowGainArea.setPosition(121, 278);
 
     auto midVolumeArea = midArea.removeFromTop(178);
-    midVolumeArea.setPosition(
-        500,
-        91
-    );
+    midVolumeArea.setPosition(500, 91);
+
     auto midGainArea = midArea.removeFromBottom(126);
-    midGainArea.setPosition(
-        494,
-        280
-    );
+    midGainArea.setPosition(494, 280);
 
     auto highVolumeArea = highArea.removeFromBottom(179);
-    highVolumeArea.setPosition(
-        305,
-        215
-    );
+    highVolumeArea.setPosition(305, 215);
+
     auto highGainArea = highArea.removeFromTop(126);
-    highGainArea.setPosition(
-        301,
-        50);
+    highGainArea.setPosition(301, 50);
 
     auto bypassButtonArea = bottomArea.removeFromTop(50);
     bypassButtonArea.setPosition(121, 369);

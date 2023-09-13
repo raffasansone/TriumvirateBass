@@ -38,13 +38,15 @@ namespace gui
 			const auto container = getLocalBounds().reduced(4);
 			auto bounds = container;
 
-			saveButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.2f)).reduced(4));
-			previousPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(4));
-			presetList.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.4f)).reduced(4));
-			nextPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(4));
-			deleteButton.setBounds(bounds.reduced(4));
+			saveButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.2f)).reduced(2,8));
+			previousPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(2,8));
+			presetList.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.4f)).reduced(2,8));
+			nextPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(2,8));
+			deleteButton.setBounds(bounds.reduced(2,8));
 		}
 	private:
+		inline static const juce::Colour PRESET_COLOUR{0xff222222};
+
 		void buttonClicked(Button* button) override
 		{
 			if (button == &saveButton)
@@ -88,7 +90,6 @@ namespace gui
 		void configureButton(TextButton& button, const String& buttonText) 
 		{
 			button.setButtonText(buttonText);
-			button.setMouseCursor(MouseCursor::PointingHandCursor);
 			textButtonLookAndFeelBuilder(button);
 			addAndMakeVisible(button);
 			button.addListener(this);
@@ -96,13 +97,14 @@ namespace gui
 
 		void textButtonLookAndFeelBuilder(TextButton& button)
 		{
-			button.setColour(TextButton::ColourIds::buttonColourId, juce::Colour(0xff222222));
+			button.setMouseCursor(MouseCursor::PointingHandCursor);
+			button.setColour(TextButton::ColourIds::buttonColourId, PRESET_COLOUR);
 		}
 
 		void comboBoxLookAndFeelBuilder(ComboBox& box)
 		{
-			box.setColour(ComboBox::ColourIds::backgroundColourId, juce::Colour(0xff222222));
-			box.setColour(ComboBox::ColourIds::buttonColourId, juce::Colour(0xff222222));
+			box.setColour(ComboBox::ColourIds::backgroundColourId, PRESET_COLOUR);
+			box.setColour(ComboBox::ColourIds::buttonColourId, PRESET_COLOUR);
 		}
 
 		void loadPresetList()
