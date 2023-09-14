@@ -15,16 +15,16 @@ namespace service
 		PresetManager(AudioProcessorValueTreeState&);
 
 		void savePreset(const String& presetName);
+		void saveDefaultPreset(const String& presetName);
 		void deletePreset(const String& presetName);
 		void loadPreset(const String& presetName);
 		int loadNextPreset();
 		int loadPreviousPreset();
 		StringArray getAllPresets() const;
 		String getCurrentPreset() const;
+		AudioProcessorValueTreeState& valueTreeState;
 	private:
 		void valueTreeRedirected(ValueTree& treeWhichHasBeenChanged) override;
-
-		AudioProcessorValueTreeState& valueTreeState;
 		Value currentPreset;
 	};
 }

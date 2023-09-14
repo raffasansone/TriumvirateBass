@@ -1,4 +1,5 @@
 #include "PresetManager.h"
+#include "DefaultPresets.h"
 
 namespace service
 {
@@ -23,6 +24,11 @@ namespace service
 				DBG("Could not create preset directory: " + result.getErrorMessage());
 				jassertfalse;
 			}
+
+			// Save default presets the first time around
+			for (const auto preset : DefaultPresets::defaultPresetsMap) {
+				saveDefaultPreset(preset.first);
+			}
 		}
 
 		valueTreeState.state.addListener(this);
@@ -34,10 +40,28 @@ namespace service
 		if (presetName.isEmpty())
 			return;
 
-		currentPreset.setValue(presetName);
+		juce::String suffix = "";
+		if (DefaultPresets::defaultPresetsMap.find(presetName)!=DefaultPresets::defaultPresetsMap.end()) {
+			suffix = "_copy";
+		}
+
+		currentPreset.setValue(presetName+suffix);
+		
 		const auto xml = valueTreeState.copyState().createXml();
-		const auto presetFile = defaultDirectory.getChildFile(presetName + "." + extension);
+		const auto presetFile = defaultDirectory.getChildFile(presetName + suffix+ "." + extension);
 		if (!xml->writeTo(presetFile))
+		{
+			DBG("Could not create preset file: " + presetFile.getFullPathName());
+			jassertfalse;
+		}
+	}
+
+	void PresetManager::saveDefaultPreset(const String& presetName)
+	{
+		//valueTreeState.state.setProperty("default", true, nullptr);
+		XmlDocument xml{ DefaultPresets::defaultPresetsMap.at(presetName)};
+		const auto presetFile = defaultDirectory.getChildFile(presetName + "." + extension);
+		if ( !xml.getDocumentElement()->writeTo(presetFile) )
 		{
 			DBG("Could not create preset file: " + presetFile.getFullPathName());
 			jassertfalse;

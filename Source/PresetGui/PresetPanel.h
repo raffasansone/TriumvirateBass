@@ -67,11 +67,13 @@ namespace gui
 			{
 				const auto index = presetManager.loadPreviousPreset();
 				presetList.setSelectedItemIndex(index, dontSendNotification);
+				comboBoxChanged(&presetList);
 			}
 			if (button == &nextPresetButton)
 			{
 				const auto index = presetManager.loadNextPreset();
 				presetList.setSelectedItemIndex(index, dontSendNotification);
+				comboBoxChanged(&presetList);
 			}
 			if (button == &deleteButton)
 			{
@@ -84,6 +86,13 @@ namespace gui
 			if (comboBoxThatHasChanged == &presetList)
 			{
 				presetManager.loadPreset(presetList.getItemText(presetList.getSelectedItemIndex()));
+
+				if (presetManager.valueTreeState.state.getProperty("default")) {
+					deleteButton.setEnabled(false);
+				}
+				else {
+					deleteButton.setEnabled(true);
+				}
 			}
 		}
 

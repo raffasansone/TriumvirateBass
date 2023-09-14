@@ -5,7 +5,7 @@
               cppLanguageStandard="17" companyWebsite="www.raffaelesansone.com"
               pluginManufacturer="raffasansone" bundleIdentifier="com.raffasansone.TriumvirateBass"
               aaxIdentifier="com.raffasansone.TriumvirateBass" pluginVST3Category="Distortion"
-              version="0.0.5" companyName="raffasansone" pluginManufacturerCode="RFSN"
+              version="0.0.6" companyName="raffasansone" pluginManufacturerCode="RFSN"
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
@@ -19,6 +19,8 @@
         <FILE id="baNAKF" name="PresetPanel.h" compile="0" resource="0" file="Source/PresetGui/PresetPanel.h"/>
       </GROUP>
       <GROUP id="{BE34BD5D-927F-0942-5056-DD02440AF098}" name="PresetService">
+        <FILE id="srxPxd" name="DefaultPresets.h" compile="0" resource="0"
+              file="Source/PresetService/DefaultPresets.h"/>
         <FILE id="rEMxN5" name="PresetManager.cpp" compile="1" resource="0"
               file="Source/PresetService/PresetManager.cpp"/>
         <FILE id="VpnbDa" name="PresetManager.h" compile="0" resource="0" file="Source/PresetService/PresetManager.h"/>
