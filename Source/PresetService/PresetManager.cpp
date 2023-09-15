@@ -44,6 +44,7 @@ namespace service
 		if (DefaultPresets::defaultPresetsMap.find(presetName)!=DefaultPresets::defaultPresetsMap.end()) {
 			suffix = "_copy";
 		}
+		valueTreeState.state.setProperty("default", false, nullptr);
 
 		currentPreset.setValue(presetName+suffix);
 		

@@ -61,6 +61,7 @@ namespace gui
 						const auto resultFile = chooser.getResult();
 						presetManager.savePreset(resultFile.getFileNameWithoutExtension());
 						loadPresetList();
+						comboBoxChanged(&presetList);
 					});
 			}
 			if (button == &previousPresetButton)
