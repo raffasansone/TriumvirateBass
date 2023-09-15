@@ -16,6 +16,10 @@
 //#include "GraphicElements/BypassButton.h"
 
 //==============================================================================
+struct BypassButton : juce::ImageButton { 
+    BypassButton(const juce::String& name = juce::String());
+    bool hitTest(int x, int y) override; 
+};
 /**
 */
 class TriumvirateBassAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -55,7 +59,7 @@ private:
         midGainSlider,
         highGainSlider;
 
-    juce::ImageButton bypassButton;
+    BypassButton bypassButton;
     juce::Image ledOff, ledOn;
 
     using APVTS = juce::AudioProcessorValueTreeState;

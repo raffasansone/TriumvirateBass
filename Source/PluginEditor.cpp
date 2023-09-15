@@ -9,6 +9,16 @@
 #include "PluginEditor.h"
 
 //==============================================================================
+BypassButton::BypassButton(const juce::String& name) {
+    ImageButton::ImageButton(name);
+}
+
+bool BypassButton::hitTest(int x, int y) {
+    // Sets the hitbox to a centered square the size of the component's height
+    int widthPadding = (getLocalBounds().getWidth() - getLocalBounds().getHeight() ) / 2;
+    return x > widthPadding && x < (widthPadding + getLocalBounds().getHeight());
+}
+
 TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (TriumvirateBassAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     versionLabel("version", BUILD_VERSION),
