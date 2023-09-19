@@ -5,7 +5,7 @@
               cppLanguageStandard="17" companyWebsite="www.raffaelesansone.com"
               pluginManufacturer="raffasansone" bundleIdentifier="com.raffasansone.TriumvirateBass"
               aaxIdentifier="com.raffasansone.TriumvirateBass" pluginVST3Category="Distortion"
-              version="0.0.6" companyName="raffasansone" pluginManufacturerCode="RFSN"
+              version="0.1.0" companyName="raffasansone" pluginManufacturerCode="RFSN"
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">

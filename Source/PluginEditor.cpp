@@ -9,16 +9,56 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-BypassButton::BypassButton(const juce::String& name) {
+BypassButton::BypassButton(const juce::String& name) 
+{
     ImageButton::ImageButton(name);
 }
 
-bool BypassButton::hitTest(int x, int y) {
+bool BypassButton::hitTest(int x, int y) 
+{
     // Sets the hitbox to a centered square the size of the component's height
     int widthPadding = (getLocalBounds().getWidth() - getLocalBounds().getHeight() ) / 2;
     return x > widthPadding && x < (widthPadding + getLocalBounds().getHeight());
 }
 
+CustomLevelMeterLnF::CustomLevelMeterLnF()
+{
+    CustomLevelMeterLnF::setupDefaultMeterColours();
+    CustomLevelMeterLnF::setupDefaultStereoFieldColours();
+}
+
+void CustomLevelMeterLnF::setupDefaultMeterColours()
+{
+    setColour(foleys::LevelMeter::lmTextColour, juce::Colours::lightgrey);
+    setColour(foleys::LevelMeter::lmTextClipColour, juce::Colours::white);
+    setColour(foleys::LevelMeter::lmTextDeactiveColour, juce::Colours::darkgrey);
+    setColour(foleys::LevelMeter::lmTicksColour, juce::Colours::orange);
+    setColour(foleys::LevelMeter::lmOutlineColour, juce::Colours::orange);
+    setColour(foleys::LevelMeter::lmBackgroundColour, juce::Colour(0x00000000));
+    setColour(foleys::LevelMeter::lmBackgroundClipColour, juce::Colours::red);
+    setColour(foleys::LevelMeter::lmMeterForegroundColour, juce::Colours::green);
+    setColour(foleys::LevelMeter::lmMeterOutlineColour, juce::Colours::lightgrey);
+    setColour(foleys::LevelMeter::lmMeterBackgroundColour, juce::Colours::darkgrey);
+    setColour(foleys::LevelMeter::lmMeterMaxNormalColour, juce::Colours::lightgrey);
+    setColour(foleys::LevelMeter::lmMeterMaxWarnColour, juce::Colours::orange);
+    setColour(foleys::LevelMeter::lmMeterMaxOverColour, juce::Colours::darkred);
+    setColour(foleys::LevelMeter::lmMeterGradientLowColour, juce::Colours::green);
+    setColour(foleys::LevelMeter::lmMeterGradientMidColour, juce::Colours::lightgoldenrodyellow);
+    setColour(foleys::LevelMeter::lmMeterGradientMaxColour, juce::Colours::red);
+    setColour(foleys::LevelMeter::lmMeterReductionColour, juce::Colours::orange);
+}
+
+void CustomLevelMeterLnF::setupDefaultStereoFieldColours()
+{
+    setColour(foleys::StereoFieldComponent::backgroundColour, juce::Colour(0x00000000));
+    setColour(foleys::StereoFieldComponent::borderColour, juce::Colours::silver);
+    setColour(foleys::StereoFieldComponent::outlineColour, juce::Colours::silver);
+    setColour(foleys::StereoFieldComponent::gonioColour, juce::Colours::silver);
+    setColour(foleys::StereoFieldComponent::currentValuesColour, juce::Colours::silver);
+    setColour(foleys::StereoFieldComponent::maxValuesColour, juce::Colours::darkgrey);
+};
+
+//==============================================================================
 TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (TriumvirateBassAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     versionLabel("version", BUILD_VERSION),
@@ -154,16 +194,16 @@ void TriumvirateBassAudioProcessorEditor::resized()
     lowGainArea.setPosition(121, 278);
 
     auto midVolumeArea = midArea.removeFromTop(178);
-    midVolumeArea.setPosition(500, 91);
+    midVolumeArea.setPosition(499, 91);
 
     auto midGainArea = midArea.removeFromBottom(126);
-    midGainArea.setPosition(494, 280);
+    midGainArea.setPosition(493, 279);
 
     auto highVolumeArea = highArea.removeFromBottom(179);
-    highVolumeArea.setPosition(305, 215);
+    highVolumeArea.setPosition(306, 215);
 
     auto highGainArea = highArea.removeFromTop(126);
-    highGainArea.setPosition(301, 50);
+    highGainArea.setPosition(304, 49);
 
     auto bypassButtonArea = bottomArea.removeFromTop(50);
     bypassButtonArea.setPosition(121, 369);

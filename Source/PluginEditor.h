@@ -13,13 +13,19 @@
 #include "GraphicElements/CustomGainKnob.h"
 #include "GraphicElements/InOutGainKnob.h"
 #include "PresetGui/PresetPanel.h"
-//#include "GraphicElements/BypassButton.h"
 
 //==============================================================================
 struct BypassButton : juce::ImageButton { 
     BypassButton(const juce::String& name = juce::String());
     bool hitTest(int x, int y) override; 
 };
+
+struct CustomLevelMeterLnF : foleys::LevelMeterLookAndFeel {
+    CustomLevelMeterLnF();
+    void setupDefaultMeterColours() override;
+    void setupDefaultStereoFieldColours() override;
+};
+
 /**
 */
 class TriumvirateBassAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -44,7 +50,7 @@ private:
 
     juce::Label versionLabel;
 
-    foleys::LevelMeterLookAndFeel levelMeterLnF;
+    CustomLevelMeterLnF levelMeterLnF;
     foleys::LevelMeter inputLevelMeter, outputLevelMeter;
 
     InOutGainSlider
