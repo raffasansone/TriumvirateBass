@@ -9,9 +9,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-BypassButton::BypassButton(const juce::String& name) 
+BypassButton::BypassButton(const juce::String& name) : juce::ImageButton(name)
 {
-    ImageButton::ImageButton(name);
 }
 
 bool BypassButton::hitTest(int x, int y) 
