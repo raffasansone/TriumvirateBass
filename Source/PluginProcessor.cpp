@@ -22,6 +22,10 @@ TriumvirateBassAudioProcessor::TriumvirateBassAudioProcessor()
                        )
 #endif
 {
+    apvts.state.setProperty(service::PresetManager::presetNameProperty, "", nullptr);
+    apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
+
+    presetManager = std::make_unique<service::PresetManager>(apvts);
 }
 
 TriumvirateBassAudioProcessor::~TriumvirateBassAudioProcessor()
@@ -148,7 +152,8 @@ bool TriumvirateBassAudioProcessor::isBusesLayoutSupported (const BusesLayout& l
 }
 #endif
 
-void smoothGainTransition(juce::AudioBuffer<float>& buffer, float& newGain, float& previousGain) {
+void smoothGainTransition(juce::AudioBuffer<float>& buffer, float& newGain, float& previousGain) 
+{
     if (newGain == previousGain)
     {
         buffer.applyGain(juce::Decibels::decibelsToGain(newGain));
@@ -181,72 +186,81 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
     inputLevelMeterSource.measureBlock(buffer);
     
-    // TODO variable cutoff
-    //updateFilters();
-    
-    if (distortionChanged) {
-        updateDistortions();
-    }
+    if (!chainSettings.bypass) 
+    {
+        // TODO variable cutoff
+        //updateFilters();
 
-    // Duplicate buffer for mid and high processing
-    midBuffer.makeCopyOf(buffer, true);
-    highBuffer.makeCopyOf(buffer, true);
+        if (distortionChanged) 
+        {
+            updateDistortions();
+        }
+
+        // Duplicate buffer for mid and high processing
+        midBuffer.makeCopyOf(buffer, true);
+        highBuffer.makeCopyOf(buffer, true);
     
-    juce::dsp::AudioBlock<float> lowBlock(buffer);
-    juce::dsp::AudioBlock<float> midBlock(midBuffer);
-    juce::dsp::AudioBlock<float> highBlock(highBuffer);
+        juce::dsp::AudioBlock<float> lowBlock(buffer);
+        juce::dsp::AudioBlock<float> midBlock(midBuffer);
+        juce::dsp::AudioBlock<float> highBlock(highBuffer);
  
-    for (auto i = 0; i < totalNumOutputChannels; i++) {
-        // Low
-        auto lowChannelBlock = lowBlock.getSingleChannelBlock(i);
-        juce::dsp::ProcessContextReplacing<float> lowChannelContext(lowChannelBlock);
+        for (auto i = 0; i < totalNumOutputChannels; i++) 
+        {
+            // Low
+            auto lowChannelBlock = lowBlock.getSingleChannelBlock(i);
+            juce::dsp::ProcessContextReplacing<float> lowChannelContext(lowChannelBlock);
     
-        if (chainSettings.lowPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) {
-            if(i==0){
-                lowLeftChain.process(lowChannelContext);
+            if (chainSettings.lowPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) 
+            {
+                if(i==0){
+                    lowLeftChain.process(lowChannelContext);
+                }
+                else {
+                    lowRightChain.process(lowChannelContext);
+                }
             }
             else {
-                lowRightChain.process(lowChannelContext);
+                lowChannelContext.getOutputBlock().clear();
             }
-        }
-        else {
-            lowChannelContext.getOutputBlock().clear();
-        }
    
-        // Mid
-        auto midChannelBlock = midBlock.getSingleChannelBlock(i);
-        juce::dsp::ProcessContextReplacing<float> midChannelContext(midChannelBlock);
+            // Mid
+            auto midChannelBlock = midBlock.getSingleChannelBlock(i);
+            juce::dsp::ProcessContextReplacing<float> midChannelContext(midChannelBlock);
     
-        if (chainSettings.midPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) {
-            if (i == 0) {
-                midLeftChain.process(midChannelContext);
+            if (chainSettings.midPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) 
+            {
+                if (i == 0) {
+                    midLeftChain.process(midChannelContext);
+                }
+                else {
+                    midRightChain.process(midChannelContext);
+                }
             }
             else {
-                midRightChain.process(midChannelContext);
+                midChannelContext.getOutputBlock().clear();
             }
-        }
-        else {
-            midChannelContext.getOutputBlock().clear();
-        }
         
-        // High
-        auto highChannelBlock = highBlock.getSingleChannelBlock(i);
-        juce::dsp::ProcessContextReplacing<float> highChannelContext(highChannelBlock);
+            // High
+            auto highChannelBlock = highBlock.getSingleChannelBlock(i);
+            juce::dsp::ProcessContextReplacing<float> highChannelContext(highChannelBlock);
 
-        if (chainSettings.highPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) {
-            if (i == 0) {
-                highLeftChain.process(highChannelContext);
+            if (chainSettings.highPostGain != TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) 
+            {
+                if (i == 0) {
+                    highLeftChain.process(highChannelContext);
+                }
+                else {
+                    highRightChain.process(highChannelContext);
+                }
             }
             else {
-                highRightChain.process(highChannelContext);
+                highChannelContext.getOutputBlock().clear();
             }
-        }
-        else {
-            highChannelContext.getOutputBlock().clear();
+
+            // Sum
+            lowChannelContext.getOutputBlock().add(midChannelBlock).add(highChannelBlock);
         }
 
-        // Sum
-        lowChannelContext.getOutputBlock().add(midChannelBlock).add(highChannelBlock);
     }
 
     smoothGainTransition(buffer, chainSettings.output, previousOutputGain);
@@ -287,13 +301,21 @@ void TriumvirateBassAudioProcessor::setStateInformation (const void* data, int s
 TriumvirateBassSettings TriumvirateBassAudioProcessor::getTriumvirateBassSettings()
 {
     settings.input = apvts.getRawParameterValue("inputGain")->load();
+    settings.output = apvts.getRawParameterValue("outputGain")->load();
  
+    settings.bypass = apvts.getRawParameterValue("bypass")->load();
+
+    if (settings.bypass) {
+        return settings;
+    }
+
     //settings.lowPassFreq = 140.f; //apvts.getRawParameterValue("lowPassFreq")->load();
     bool lowDistortionChanged, midDistortionChanged, highDistortionChanged;
 
     float newLowPreampGain = apvts.getRawParameterValue("lowPreampGain")->load();
     float newLowPostGain = apvts.getRawParameterValue("lowVolume")->load();
-    if (newLowPreampGain != settings.lowPreampGain || newLowPostGain != settings.lowPostGain) {
+    if (newLowPreampGain != settings.lowPreampGain || newLowPostGain != settings.lowPostGain) 
+    {
         settings.lowPreampGain = newLowPreampGain;
         settings.lowPostGain = newLowPostGain;
         lowDistortionChanged = true;
@@ -305,7 +327,8 @@ TriumvirateBassSettings TriumvirateBassAudioProcessor::getTriumvirateBassSetting
     //settings.highPassFreq = 600.f; //apvts.getRawParameterValue("highPassFreq")->load();
     float newHighPreampGain = apvts.getRawParameterValue("highPreampGain")->load();
     float newHighPostGain = apvts.getRawParameterValue("highVolume")->load();
-    if (newHighPreampGain != settings.highPreampGain || newHighPostGain != settings.highPostGain) {
+    if (newHighPreampGain != settings.highPreampGain || newHighPostGain != settings.highPostGain) 
+    {
         settings.highPreampGain = newHighPreampGain;
         settings.highPostGain = newHighPostGain;
         highDistortionChanged = true;
@@ -318,7 +341,8 @@ TriumvirateBassSettings TriumvirateBassAudioProcessor::getTriumvirateBassSetting
     //settings.midLowPassFreq = 800.f; // apvts.getRawParameterValue("midLowPassFreq")->load();
     float newMidPreampGain = apvts.getRawParameterValue("midPreampGain")->load();
     float newMidPostGain = apvts.getRawParameterValue("midVolume")->load();
-    if (newMidPreampGain != settings.midPreampGain || newMidPostGain != settings.midPostGain) {
+    if (newMidPreampGain != settings.midPreampGain || newMidPostGain != settings.midPostGain) 
+    {
         settings.midPreampGain = newMidPreampGain;
         settings.midPostGain = newMidPostGain;
         midDistortionChanged = true;
@@ -327,24 +351,25 @@ TriumvirateBassSettings TriumvirateBassAudioProcessor::getTriumvirateBassSetting
         midDistortionChanged = false;
     }
     
-    settings.output = apvts.getRawParameterValue("outputGain")->load();
-    
     //settings.lowPassSlope = Slope_12; /// static_cast<Slope>(apvts.getRawParameterValue("lowPassSlope")->load());
     //settings.highPassSlope = Slope_12; // static_cast<Slope>(apvts.getRawParameterValue("highPassSlope")->load());
     //settings.midHighPassSlope = Slope_12; // static_cast<Slope>(apvts.getRawParameterValue("midHighPassSlope")->load());
     //settings.midLowPassSlope = Slope_12; // static_cast<Slope>(apvts.getRawParameterValue("midLowPassSlope")->load());
 
-    if (lowDistortionChanged || midDistortionChanged || highDistortionChanged) {
+    if (lowDistortionChanged || midDistortionChanged || highDistortionChanged) 
+    {
         distortionChanged = true;
     }
-    if (!lowDistortionChanged && !midDistortionChanged && !highDistortionChanged) {
+    if (!lowDistortionChanged && !midDistortionChanged && !highDistortionChanged) 
+    {
         distortionChanged = false;
     }
 
     return settings;
 }
 
-void TriumvirateBassAudioProcessor::initialisePostLowBandLowPass() {
+void TriumvirateBassAudioProcessor::initialisePostLowBandLowPass() 
+{
     // Fixed Low Pass on bass freq
     auto postAmpLowPassCoefficients = juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(
         5500.f,
@@ -358,7 +383,8 @@ void TriumvirateBassAudioProcessor::initialisePostLowBandLowPass() {
     *rightLowPass.coefficients = *postAmpLowPassCoefficients[0];
 }
 
-void TriumvirateBassAudioProcessor::initialisePostMidBandLowPass() {
+void TriumvirateBassAudioProcessor::initialisePostMidBandLowPass() 
+{
     // Fixed Low Pass on mid freq
     auto postAmpMidLowPassCoefficients = juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(
         13000.f,
@@ -434,7 +460,8 @@ void TriumvirateBassAudioProcessor::updateFilters()
     updateLowPassFilters(chainSettings);
 }
 
-float distortionAlgorithm(float threshold, float hardness, float x) {
+float distortionAlgorithm(float threshold, float hardness, float x) 
+{
     float t = std::abs(x);
     if (t > threshold)
     {
@@ -445,8 +472,8 @@ float distortionAlgorithm(float threshold, float hardness, float x) {
     return x;
 }
 
-void TriumvirateBassAudioProcessor::updateDistortions() {
-
+void TriumvirateBassAudioProcessor::updateDistortions() 
+{
     auto chainSettings = getTriumvirateBassSettings();
 
     float(*d)(float, float, float) = distortionAlgorithm;
@@ -536,10 +563,12 @@ TriumvirateBassAudioProcessor::createParameterLayout()
     
     auto dBGainParamAttributes = juce::AudioParameterFloatAttributes().withStringFromValueFunction([](auto value, auto) 
         { 
-            if (value == TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) {
+            if (value == TriumvirateBassAudioProcessor::MINUS_INFINITY_DB) 
+            {
                 return juce::String("-inf");
             }
-            else {
+            else 
+            {
                 return juce::String(value, 2);
             }
         })
@@ -590,6 +619,8 @@ TriumvirateBassAudioProcessor::createParameterLayout()
     //layout.add(std::make_unique<juce::AudioParameterChoice>("highPassSlope", "highPassSlope", stringArray, 0));
     //layout.add(std::make_unique<juce::AudioParameterChoice>("midHighPassSlope", "midHighPassSlope", stringArray, 0));
     //layout.add(std::make_unique<juce::AudioParameterChoice>("midLowPassSlope", "midLowPassSlope", stringArray, 0));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("bypass", "Bypass", false, "Bypass"));
 
     return layout;
 }
