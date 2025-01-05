@@ -17,7 +17,6 @@
 				9DA7E6E24FBFAB1240361AA7,
 				914A4EF9E83937AD0D830A5E,
 				76B3F99AB0C34B3D51B27D21,
-				5A0CB351C14274D96483722B,
 			);
 			name = "TriumvirateBass - All";
 			productName = TriumvirateBass;
@@ -32,7 +31,6 @@
 		0B6136ACCE9FC0A6D54BEADF /* include_juce_audio_plugin_client_utils.cpp */ = {isa = PBXBuildFile; fileRef = 0E0A00D43E923AEA2BF9416D; };
 		120F6E0F01F3CD5370B72BD9 /* AudioToolbox.framework */ = {isa = PBXBuildFile; fileRef = E39869EF12B7B7B6AC0626D5; };
 		1555E02E3ACCCD4C1FAF8CC6 /* PluginProcessor.cpp */ = {isa = PBXBuildFile; fileRef = 8B2F0DA421DFDCC5DA7A347A; };
-		1A15330E4A9FEFA9439A7CA2 /* juce_VST3ManifestHelper.mm */ = {isa = PBXBuildFile; fileRef = 5C25FC9478E9CE17B9461D57; settings = { COMPILER_FLAGS = "-std=c++17 -fobjc-arc -w -DJUCE_SKIP_PRECOMPILED_HEADER"; }; };
 		1B55E4991F5A1D61327CEBF0 /* include_juce_audio_processors_ara.cpp */ = {isa = PBXBuildFile; fileRef = 874A42BC93F21327B41A4272; };
 		1E82D568A6332A8E9A8C4CC9 /* VST3 */ = {isa = PBXBuildFile; fileRef = 1CC7F5DD75E9CBE81FDB90EB; };
 		1E9A5B429DF11672DB8C4AB9 /* include_juce_audio_plugin_client_VST_utils.mm */ = {isa = PBXBuildFile; fileRef = 00552A87AAED680B7B85D6BE; };
@@ -70,7 +68,6 @@
 		F1AF785CD1EAED6B240E714F /* Accelerate.framework */ = {isa = PBXBuildFile; fileRef = DACF4A82E08998FA9F103B71; };
 		F74E2A790A5E5E048DADF282 /* Cocoa.framework */ = {isa = PBXBuildFile; fileRef = 88E3C53C9F2DA1CCFED8EA42; };
 		FA951D3FE9C1E852E8111F83 /* include_ff_meters.cpp */ = {isa = PBXBuildFile; fileRef = 3FEC9200C1615551826901D4; };
-		FCD728136ADAF273B6BCB6A4 /* VST3 Manifest Helper */ = {isa = PBXBuildFile; fileRef = 2D9408D39DFD092E90838F7B; };
 		FEC83312C78BBA3DC6933C7F /* include_juce_data_structures.mm */ = {isa = PBXBuildFile; fileRef = EF683085E6B479F809D6BE2A; };
 /* End PBXBuildFile section */
 
@@ -93,7 +90,6 @@
 		265723DF34C691EB29824004 /* PresetManager.cpp */ /* PresetManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PresetManager.cpp; path = ../../Source/PresetService/PresetManager.cpp; sourceTree = SOURCE_ROOT; };
 		27B272F4319276BBF0890EA2 /* include_juce_audio_plugin_client_VST3.cpp */ /* include_juce_audio_plugin_client_VST3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_VST3.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp; sourceTree = SOURCE_ROOT; };
 		2857A85ED208BA53FC242271 /* PresetManager.h */ /* PresetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../../Source/PresetService/PresetManager.h; sourceTree = SOURCE_ROOT; };
-		2D9408D39DFD092E90838F7B /* VST3 Manifest Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = juce_vst3_helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EF1496F4FC000BA0193E580 /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = ../../JUCE/modules/juce_audio_plugin_client; sourceTree = SOURCE_ROOT; };
 		321FAB94DE9D36735361A716 /* include_juce_audio_devices.mm */ /* include_juce_audio_devices.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_devices.mm; path = ../../JuceLibraryCode/include_juce_audio_devices.mm; sourceTree = SOURCE_ROOT; };
 		322A32EA3624D11BEB0700C8 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
@@ -107,7 +103,6 @@
 		509F3C5BF5B1366D9929825C /* include_juce_gui_basics.mm */ /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
 		5829F70641CF9FFD5A6E544C /* Info-AU.plist */ /* Info-AU.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-AU.plist"; path = "Info-AU.plist"; sourceTree = SOURCE_ROOT; };
 		5BE1070C710BB3FC1F0678F3 /* JucePluginDefines.h */ /* JucePluginDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JucePluginDefines.h; path = ../../JuceLibraryCode/JucePluginDefines.h; sourceTree = SOURCE_ROOT; };
-		5C25FC9478E9CE17B9461D57 /* juce_VST3ManifestHelper.mm */ /* juce_VST3ManifestHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_VST3ManifestHelper.mm; path = "$(SRCROOT)/../../JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3ManifestHelper.mm"; sourceTree = "<absolute>"; };
 		5E08FD72D711578B75E80316 /* ff_meters */ /* ff_meters */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ff_meters; path = ../../submodules/ff_meters; sourceTree = SOURCE_ROOT; };
 		5FCA2EE0555C21DBCD34C837 /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = ../../JUCE/modules/juce_audio_processors; sourceTree = SOURCE_ROOT; };
 		61BD5353AAF16A27F97DF30C /* CoreAudio.framework */ /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -129,7 +124,6 @@
 		92477ACDE60F9AD591A72AA1 /* triumvirate_new.png */ /* triumvirate_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = triumvirate_new.png; path = ../../Resources/triumvirate_new.png; sourceTree = SOURCE_ROOT; };
 		957257F6AC5A4336B0DFABD9 /* AU */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TriumvirateBass.component; sourceTree = BUILT_PRODUCTS_DIR; };
 		9572D648A9830700957AE0FD /* Standalone Plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TriumvirateBass.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		97FE4D219208D6056F0E66F8 /* Info-VST3_Manifest_Helper.plist */ /* Info-VST3_Manifest_Helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3_Manifest_Helper.plist"; path = "Info-VST3_Manifest_Helper.plist"; sourceTree = SOURCE_ROOT; };
 		9AF0E5168A5F6D7436F43CBA /* include_juce_audio_plugin_client_Standalone.cpp */ /* include_juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_Standalone.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp; sourceTree = SOURCE_ROOT; };
 		9E736B1CC80CD862080A0FD7 /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		A18C8593AEB88553221C7AA1 /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
@@ -193,24 +187,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		944CC4557E9CF4465A1D2108 = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F1AF785CD1EAED6B240E714F,
-				120F6E0F01F3CD5370B72BD9,
-				F74E2A790A5E5E048DADF282,
-				75498C00515F55EDD788CA9B,
-				8F6270D9C8D1D96AA7A75F8C,
-				B2C9BFC2D4253DE23C1F1011,
-				4C6E6CF45837D10030154C8A,
-				A7DB33728FC3EEF6F05720CE,
-				DB5784C839AFC23832D52D69,
-				02B8BE41212C7477045F8546,
-				2730EF16551C4E75DD00E766,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A582E351CE1B49180F2D9CD1 = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -249,7 +225,6 @@
 				957257F6AC5A4336B0DFABD9,
 				9572D648A9830700957AE0FD,
 				D735C0B2026B67B86F76D9F0,
-				2D9408D39DFD092E90838F7B,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,7 +275,6 @@
 				24D7276F8F2695215A2915CE,
 				5829F70641CF9FFD5A6E544C,
 				697D550039AFADEE9C2BE5C5,
-				97FE4D219208D6056F0E66F8,
 				89E27C2098FDC1A35D58D89E,
 			);
 			name = Resources;
@@ -414,13 +388,11 @@
 				FF199EBBA1EE730F8B0E5F00,
 				7BCE94EEE17B2F9A6579D715,
 				70009DAAC37252CDFA2E32A1,
-				3CFC27F46A2D477FADD1AFF9,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				364981C48A9672AFF85C9C37,
-				1E092A8969EE768636F90D5C,
 			);
 			name = "TriumvirateBass - VST3";
 			productName = TriumvirateBass;
@@ -441,22 +413,6 @@
 			productName = TriumvirateBass;
 			productReference = D735C0B2026B67B86F76D9F0;
 			productType = "com.apple.product-type.library.static";
-		};
-		82F6755191423F268BEDCE14 /* TriumvirateBass - VST3 Manifest Helper */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 97C7B1F4197DD37792060E7D;
-			buildPhases = (
-				AD2AD9233D76D41A1647BDBB,
-				944CC4557E9CF4465A1D2108,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "TriumvirateBass - VST3 Manifest Helper";
-			productName = TriumvirateBass;
-			productReference = 2D9408D39DFD092E90838F7B;
-			productType = "com.apple.product-type.tool";
 		};
 		9BF9FDD6A04D9ED140ABF167 /* TriumvirateBass - AU */ = {
 			isa = PBXNativeTarget;
@@ -569,28 +525,6 @@
 							};
 						};
 					};
-					82F6755191423F268BEDCE14 = {
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
-							};
-							com.apple.HardenedRuntime = {
-								enabled = 0;
-							};
-							com.apple.InAppPurchase = {
-								enabled = 0;
-							};
-							com.apple.InterAppAudio = {
-								enabled = 0;
-							};
-							com.apple.Push = {
-								enabled = 0;
-							};
-							com.apple.Sandbox = {
-								enabled = 0;
-							};
-						};
-					};
 					9BF9FDD6A04D9ED140ABF167 = {
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -653,7 +587,6 @@
 				9BF9FDD6A04D9ED140ABF167,
 				AB6C89C763145B77AE980F0B,
 				1A1E23AB4703FFF941EAD79F,
-				82F6755191423F268BEDCE14,
 			);
 		};
 /* End PBXProject section */
@@ -684,20 +617,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3CFC27F46A2D477FADD1AFF9 /* Update manifest */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			name = "Update manifest";
-			alwaysOutOfDate = 1;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nrm -f \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/moduleinfo.json\"\nxcrun codesign --verify \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" || xcrun codesign -f -s - \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\"$CONFIGURATION_BUILD_DIR/juce_vst3_helper\" -create -version \"0.1.0\" -path \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" -output \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/moduleinfo.json\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1AEE975F42B882831E18528D = {
@@ -756,21 +675,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AD2AD9233D76D41A1647BDBB = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1A15330E4A9FEFA9439A7CA2,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1E092A8969EE768636F90D5C = {
-			isa = PBXTargetDependency;
-			target = 82F6755191423F268BEDCE14;
-		};
 		364981C48A9672AFF85C9C37 = {
 			isa = PBXTargetDependency;
 			target = 1A1E23AB4703FFF941EAD79F;
@@ -778,10 +685,6 @@
 		408A54D642CE440FFE40573F = {
 			isa = PBXTargetDependency;
 			target = 0BB2727FE9B3D8BD654075BD;
-		};
-		5A0CB351C14274D96483722B = {
-			isa = PBXTargetDependency;
-			target = 82F6755191423F268BEDCE14;
 		};
 		76B3F99AB0C34B3D51B27D21 = {
 			isa = PBXTargetDependency;
@@ -825,7 +728,7 @@
 					"DEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -941,7 +844,7 @@
 					"DEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1052,7 +955,7 @@
 					"NDEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1148,117 +1051,6 @@
 			};
 			name = Release;
 		};
-		5D4ADFF6743CAA7C9357C2A8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_LINK_OBJC_RUNTIME = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
-				COPY_PHASE_STRIP = NO;
-				EXCLUDED_ARCHS = "";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"_DEBUG=1",
-					"DEBUG=1",
-					"JUCE_DISPLAY_SPLASH_SCREEN=1",
-					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
-					"JUCE_MODULE_AVAILABLE_ff_meters=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_formats=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_processors=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
-					"JUCE_MODULE_AVAILABLE_juce_core=1",
-					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
-					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
-					"JUCE_MODULE_AVAILABLE_juce_events=1",
-					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
-					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
-					"JUCE_VST3_CAN_REPLACE_VST2=0",
-					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
-					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
-					"JucePlugin_Build_AU=0",
-					"JucePlugin_Build_AUv3=0",
-					"JucePlugin_Build_AAX=0",
-					"JucePlugin_Build_Standalone=0",
-					"JucePlugin_Build_Unity=0",
-					"JucePlugin_Build_LV2=0",
-					"JucePlugin_Enable_IAA=0",
-					"JucePlugin_Enable_ARA=0",
-					"JucePlugin_Name=\\\"TriumvirateBass\\\"",
-					"JucePlugin_Desc=\\\"TriumvirateBass\\\"",
-					"JucePlugin_Manufacturer=\\\"raffasansone\\\"",
-					"JucePlugin_ManufacturerWebsite=\\\"www.raffaelesansone.com\\\"",
-					"JucePlugin_ManufacturerEmail=\\\"\\\"",
-					"JucePlugin_ManufacturerCode=0x5246534e",
-					"JucePlugin_PluginCode=0x54525642",
-					"JucePlugin_IsSynth=0",
-					"JucePlugin_WantsMidiInput=0",
-					"JucePlugin_ProducesMidiOutput=0",
-					"JucePlugin_IsMidiEffect=0",
-					"JucePlugin_EditorRequiresKeyboardFocus=0",
-					"JucePlugin_Version=0.1.0",
-					"JucePlugin_VersionCode=0x100",
-					"JucePlugin_VersionString=\\\"0.1.0\\\"",
-					"JucePlugin_VSTUniqueID=JucePlugin_PluginCode",
-					"JucePlugin_VSTCategory=kPlugCategEffect",
-					"JucePlugin_Vst3Category=\\\"Fx|Distortion\\\"",
-					"JucePlugin_AUMainType=\\'aufx\\'",
-					"JucePlugin_AUSubType=JucePlugin_PluginCode",
-					"JucePlugin_AUExportPrefix=TriumvirateBassAU",
-					"JucePlugin_AUExportPrefixQuoted=\\\"TriumvirateBassAU\\\"",
-					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.raffasansone.TriumvirateBass",
-					"JucePlugin_AAXIdentifier=com.raffasansone.TriumvirateBass",
-					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
-					"JucePlugin_AAXCategory=0",
-					"JucePlugin_AAXDisableBypass=0",
-					"JucePlugin_AAXDisableMultiMono=0",
-					"JucePlugin_IAAType=0x61757278",
-					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"raffasansone:\\ TriumvirateBass\\\"",
-					"JucePlugin_VSTNumMidiInputs=16",
-					"JucePlugin_VSTNumMidiOutputs=16",
-					"JucePlugin_ARAContentTypes=0",
-					"JucePlugin_ARATransformationFlags=0",
-					"JucePlugin_ARAFactoryID=\\\"com.raffasansone.TriumvirateBass.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.raffasansone.TriumvirateBass.aradocumentarchive.0.1.0\\\"",
-					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
-					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=0.1.0",
-					"JUCE_APP_VERSION_HEX=0x100",
-				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
-					"$(SRCROOT)/../../JuceLibraryCode",
-					"$(SRCROOT)/../../submodules",
-					"$(SRCROOT)/../../JUCE/modules",
-					"$(SRCROOT)/../../JUCE/modules/juce_audio_plugin_client/AU",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Info-VST3_Manifest_Helper.plist;
-				INFOPLIST_PREPROCESS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(SRCROOT)/../../submodules $(SRCROOT)/../../JUCE/modules $(SRCROOT)/../../JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
-				PRODUCT_BUNDLE_IDENTIFIER = com.raffasansone.TriumvirateBass;
-				PRODUCT_NAME = "juce_vst3_helper";
-				USE_HEADERMAP = NO;
-				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
-			};
-			name = Debug;
-		};
 		61ECA08F42ECDA44F1EDFCDD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1333,7 +1125,7 @@
 					"NDEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1452,7 +1244,7 @@
 					"NDEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1624,7 +1416,7 @@
 					"NDEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1738,7 +1530,7 @@
 					"DEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -1836,118 +1628,6 @@
 			};
 			name = Debug;
 		};
-		D2F72014A36FCFE751758FD7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_LINK_OBJC_RUNTIME = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
-				DEAD_CODE_STRIPPING = YES;
-				EXCLUDED_ARCHS = "";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"_NDEBUG=1",
-					"NDEBUG=1",
-					"JUCE_DISPLAY_SPLASH_SCREEN=1",
-					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
-					"JUCE_MODULE_AVAILABLE_ff_meters=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_formats=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_processors=1",
-					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
-					"JUCE_MODULE_AVAILABLE_juce_core=1",
-					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
-					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
-					"JUCE_MODULE_AVAILABLE_juce_events=1",
-					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
-					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
-					"JUCE_VST3_CAN_REPLACE_VST2=0",
-					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
-					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
-					"JucePlugin_Build_AU=0",
-					"JucePlugin_Build_AUv3=0",
-					"JucePlugin_Build_AAX=0",
-					"JucePlugin_Build_Standalone=0",
-					"JucePlugin_Build_Unity=0",
-					"JucePlugin_Build_LV2=0",
-					"JucePlugin_Enable_IAA=0",
-					"JucePlugin_Enable_ARA=0",
-					"JucePlugin_Name=\\\"TriumvirateBass\\\"",
-					"JucePlugin_Desc=\\\"TriumvirateBass\\\"",
-					"JucePlugin_Manufacturer=\\\"raffasansone\\\"",
-					"JucePlugin_ManufacturerWebsite=\\\"www.raffaelesansone.com\\\"",
-					"JucePlugin_ManufacturerEmail=\\\"\\\"",
-					"JucePlugin_ManufacturerCode=0x5246534e",
-					"JucePlugin_PluginCode=0x54525642",
-					"JucePlugin_IsSynth=0",
-					"JucePlugin_WantsMidiInput=0",
-					"JucePlugin_ProducesMidiOutput=0",
-					"JucePlugin_IsMidiEffect=0",
-					"JucePlugin_EditorRequiresKeyboardFocus=0",
-					"JucePlugin_Version=0.1.0",
-					"JucePlugin_VersionCode=0x100",
-					"JucePlugin_VersionString=\\\"0.1.0\\\"",
-					"JucePlugin_VSTUniqueID=JucePlugin_PluginCode",
-					"JucePlugin_VSTCategory=kPlugCategEffect",
-					"JucePlugin_Vst3Category=\\\"Fx|Distortion\\\"",
-					"JucePlugin_AUMainType=\\'aufx\\'",
-					"JucePlugin_AUSubType=JucePlugin_PluginCode",
-					"JucePlugin_AUExportPrefix=TriumvirateBassAU",
-					"JucePlugin_AUExportPrefixQuoted=\\\"TriumvirateBassAU\\\"",
-					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.raffasansone.TriumvirateBass",
-					"JucePlugin_AAXIdentifier=com.raffasansone.TriumvirateBass",
-					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
-					"JucePlugin_AAXCategory=0",
-					"JucePlugin_AAXDisableBypass=0",
-					"JucePlugin_AAXDisableMultiMono=0",
-					"JucePlugin_IAAType=0x61757278",
-					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"raffasansone:\\ TriumvirateBass\\\"",
-					"JucePlugin_VSTNumMidiInputs=16",
-					"JucePlugin_VSTNumMidiOutputs=16",
-					"JucePlugin_ARAContentTypes=0",
-					"JucePlugin_ARATransformationFlags=0",
-					"JucePlugin_ARAFactoryID=\\\"com.raffasansone.TriumvirateBass.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.raffasansone.TriumvirateBass.aradocumentarchive.0.1.0\\\"",
-					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
-					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=0.1.0",
-					"JUCE_APP_VERSION_HEX=0x100",
-				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
-					"$(SRCROOT)/../../JuceLibraryCode",
-					"$(SRCROOT)/../../submodules",
-					"$(SRCROOT)/../../JUCE/modules",
-					"$(SRCROOT)/../../JUCE/modules/juce_audio_plugin_client/AU",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Info-VST3_Manifest_Helper.plist;
-				INFOPLIST_PREPROCESS = NO;
-				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(SRCROOT)/../../submodules $(SRCROOT)/../../JUCE/modules $(SRCROOT)/../../JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
-				PRODUCT_BUNDLE_IDENTIFIER = com.raffasansone.TriumvirateBass;
-				PRODUCT_NAME = "juce_vst3_helper";
-				USE_HEADERMAP = NO;
-				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
-			};
-			name = Release;
-		};
 		F3D9099FF2533589A2500056 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1965,7 +1645,7 @@
 					"DEBUG=1",
 					"JUCE_DISPLAY_SPLASH_SCREEN=1",
 					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x70007",
+					"JUCE_PROJUCER_VERSION=0x70004",
 					"JUCE_MODULE_AVAILABLE_ff_meters=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
 					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
@@ -2095,15 +1775,6 @@
 			buildConfigurations = (
 				D1CE82D19FB9F2936981A18B,
 				8AE37A41A2A73095ED32F174,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		97C7B1F4197DD37792060E7D = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5D4ADFF6743CAA7C9357C2A8,
-				D2F72014A36FCFE751758FD7,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

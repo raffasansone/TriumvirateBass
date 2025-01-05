@@ -31,8 +31,9 @@ Repository: https://github.com/ffAudio/ff_meters.git
 API documentation: https://foleysfinest.com/ff_meters/
 
 ff_meters has been added as a submodule for this repository.
-Executing the command 'git submodule update --init --recursive' upon cloning
-the Triumvirate repository should set everything up for you.
+Executing the 'setup_pc.bat' upon cloning
+the Triumvirate repository should set everything up for you and open the 
+JUCER file.
 
 Once you make sure the dependencies are in place, the software should compile 
 without issues.

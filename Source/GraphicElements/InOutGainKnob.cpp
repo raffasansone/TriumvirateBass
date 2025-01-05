@@ -22,7 +22,7 @@ void InOutGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
     using namespace juce;
 
-    auto bounds = Rectangle<float>(x, y, width, height);
+    auto bounds = Rectangle<float>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height));
 
     //Knob
     g.setColour(Colour(0.0f,0.0f,0.0f,0.0f));
@@ -60,11 +60,11 @@ void InOutGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         g.setColour(Colour(255u, 255u, 255u));
         g.fillPath(p);
 
-        g.setFont(ioslider->getTextHeight());
+        g.setFont(static_cast<float>(ioslider->getTextHeight()));
         juce::String text = ioslider->getDisplayString() + juce::newLine + ioslider->getLabel();
         auto strWidth = g.getCurrentFont().getStringWidth(text);
 
-        r.setSize(strWidth, ioslider->getTextHeight());
+        r.setSize(static_cast<float>(strWidth), static_cast<float>(ioslider->getTextHeight()));
         r.setCentre(bounds.getCentre());
         r.setY(r.getCentreY() + 46.f);
 
@@ -93,7 +93,7 @@ void InOutGainSlider::paint(juce::Graphics& g)
         sliderBounds.getY(),
         sliderBounds.getWidth(),
         sliderBounds.getHeight(),
-        param->convertTo0to1(getValue()),
+        param->convertTo0to1(static_cast<float>(getValue())),
         startAng,
         endAng,
         *this);
@@ -103,7 +103,7 @@ juce::Rectangle<int> InOutGainSlider::getSliderBounds() const
 {
     auto bounds = getLocalBounds();
     auto size = juce::jmin(bounds.getWidth(), bounds.getHeight());
-    size *= 0.9;
+    size *= 0.9f;
 
     size -= getTextHeight() * 2;
     juce::Rectangle<int> r;
