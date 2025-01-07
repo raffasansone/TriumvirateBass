@@ -22,7 +22,7 @@ void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
     using namespace juce;
 
-    auto bounds = Rectangle<float>(x, y, width, height);
+    auto bounds = Rectangle<float>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height));
 
     //Knob
     //g.setGradientFill(ColourGradient(
@@ -67,11 +67,11 @@ void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         g.fillPath(p);
 
         if (cgslider->isTextLabelToDraw()) {
-            g.setFont(cgslider->getTextHeight());
+            g.setFont(static_cast<float>(cgslider->getTextHeight()));
             auto text = cgslider->getDisplayString();
             auto strWidth = g.getCurrentFont().getStringWidth(text);
 
-            r.setSize(strWidth + 4, cgslider->getTextHeight() + 2);
+            r.setSize(static_cast<float>(strWidth + 4), static_cast<float>(cgslider->getTextHeight() + 2));
             r.setCentre(bounds.getCentre());
 
             g.setColour(Colours::black);
@@ -103,7 +103,7 @@ void CustomGainSlider::paint(juce::Graphics& g)
         sliderBounds.getY(),
         sliderBounds.getWidth(),
         sliderBounds.getHeight(),
-        param->convertTo0to1(getValue()),
+        param->convertTo0to1(static_cast<float>(getValue())),
         startAng,
         endAng,
         *this);

@@ -23,19 +23,48 @@ enum Slope
 
 struct TriumvirateBassSettings
 {
-    float input{ 0.0f }, output{ 0.0f };
+    class DebugFloat
+    {
+    public:
+        explicit DebugFloat(const float f) {
+            m_float = f;
+        }
+
+        DebugFloat& operator=(const float f) {
+            m_float = f;
+            return *this;
+        }
+
+        operator float() const{
+            return m_float;
+        }
+
+        operator float&() {
+            return m_float;
+        }
+
+    private:
+        float m_float;
+    };
+
+    DebugFloat input{ 0.0f }, output{ 0.0f };
     float highPassFreq{ 600.f }, lowPassFreq{ 140.f }, midHighPassFreq{ 100.f }, midLowPassFreq{ 800.f };
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
     Slope lowPassSlope{ Slope::Slope_12 }, highPassSlope{ Slope::Slope_12 }, midLowPassSlope{ Slope::Slope_12 }, midHighPassSlope{Slope::Slope_12};
     bool bypass{ false };
+
+    float& operator=(const float f) {
+
+    }
 };
 
 
 //==============================================================================
 /**
 */
-class TriumvirateBassAudioProcessor  : public juce::AudioProcessor
+class TriumvirateBassAudioProcessor  : public juce::AudioProcessor,
+                                       public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -79,26 +108,26 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-    juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "PARAMETERS", createParameterLayout()};
+    juce::AudioProcessorValueTreeState apvts { *this, nullptr, "PARAMETERS", createParameterLayout()};
 
     foleys::LevelMeterSource& getInputLevelMeterSource();
     foleys::LevelMeterSource& getOutputLevelMeterSource();
     
     service::PresetManager& getPresetManager() { return *presetManager; }
 
-    static constexpr float MINUS_INFINITY_DB{ -128.f };
+    static constexpr float MINUS_INFINITY_DB { -128.f };
 
 private:
     foleys::LevelMeterSource inputLevelMeterSource, outputLevelMeterSource;
 
     TriumvirateBassSettings settings;
-    TriumvirateBassSettings getTriumvirateBassSettings();
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    bool distortionChanged {false};
 
     std::unique_ptr<service::PresetManager> presetManager;
 
     juce::AudioBuffer<float> midBuffer, highBuffer;
     float previousInputGain, previousOutputGain;
-    bool distortionChanged = false;
     using Waveshaper = juce::dsp::WaveShaper<float, std::function<float (float)>>;
     using Filter = juce::dsp::IIR::Filter<float>;
     using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>; // Filter up to 4th order
