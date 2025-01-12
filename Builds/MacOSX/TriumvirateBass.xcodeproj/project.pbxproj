@@ -135,6 +135,7 @@
 		BE2B9623777EF6D89EDFA592 /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
 		BF0975A2D28892DE08746EAF /* QuartzCore.framework */ /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFD9AD5E27AD972B39D8BACC /* InOutGainKnob.h */ /* InOutGainKnob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InOutGainKnob.h; path = ../../Source/GraphicElements/InOutGainKnob.h; sourceTree = SOURCE_ROOT; };
+		C83A33A9D3E45F10D3A2E0F3 /* Settings_icon_EFEFEF_40x40.png */ /* Settings_icon_EFEFEF_40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Settings_icon_EFEFEF_40x40.png; path = ../../Resources/Settings_icon_EFEFEF_40x40.png; sourceTree = SOURCE_ROOT; };
 		C950217DBD8D792BB48CD58C /* DiscRecording.framework */ /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		CA63021A80AE2A4A5BCBFE90 /* PresetPanel.h */ /* PresetPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PresetPanel.h; path = ../../Source/PresetGui/PresetPanel.h; sourceTree = SOURCE_ROOT; };
 		CAC785D6D88D575DCDDDDB63 /* DefaultPresets.h */ /* DefaultPresets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DefaultPresets.h; path = ../../Source/PresetService/DefaultPresets.h; sourceTree = SOURCE_ROOT; };
@@ -338,6 +339,7 @@
 		EE5167BCD357697CC6D380BC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C83A33A9D3E45F10D3A2E0F3,
 				B0D48100B39DC2EE82997954,
 				6D5998F9A0C5A81BF7FE758F,
 				92477ACDE60F9AD591A72AA1,

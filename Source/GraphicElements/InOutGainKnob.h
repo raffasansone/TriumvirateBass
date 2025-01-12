@@ -41,6 +41,7 @@ struct InOutGainSlider : juce::Slider
     }
 
     void paint(juce::Graphics& g) override;
+    juce::String getTextFromValue(double value) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 12; };
     juce::String getLabel() const {return label;};

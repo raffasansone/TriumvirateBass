@@ -20,6 +20,20 @@ bool BypassButton::hitTest(int x, int y)
     return x > widthPadding && x < (widthPadding + getLocalBounds().getHeight());
 }
 
+juce::Component* TriumviratePreferencesPanel::createComponentForPage(const juce::String& pageName)
+{
+    if (pageName.equalsIgnoreCase("Page 1"))
+        return new juce::Label(pageName, "This is page 1 of my settings.");
+
+    if (pageName.equalsIgnoreCase("Page 2"))
+        return new juce::Label(pageName, "This is page 2 of my settings.");
+}
+
+void TriumviratePreferencesPanel::paint(juce::Graphics& g)
+{
+    g.fillAll(juce::Colours::darkslategrey);
+}
+
 CustomLevelMeterLnF::CustomLevelMeterLnF()
 {
     CustomLevelMeterLnF::setupDefaultMeterColours();
@@ -58,8 +72,8 @@ void CustomLevelMeterLnF::setupDefaultStereoFieldColours()
 };
 
 //==============================================================================
-TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (TriumvirateBassAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p),
+TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor(TriumvirateBassAudioProcessor& p)
+    : AudioProcessorEditor(&p), audioProcessor(p),
     versionLabel("version", BUILD_VERSION),
     inputLevelMeter(foleys::LevelMeter::Minimal),
     inputGainSlider(*audioProcessor.apvts.getParameter("inputGain"), "Input", "dB"),
@@ -69,8 +83,11 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (Triumv
     midGainSlider(*audioProcessor.apvts.getParameter("midPreampGain"), "", TriumvirateBassAudioProcessor::MINUS_INFINITY_DB),
     highVolumeSlider(*audioProcessor.apvts.getParameter("highVolume"), "dB", TriumvirateBassAudioProcessor::MINUS_INFINITY_DB),
     highGainSlider(*audioProcessor.apvts.getParameter("highPreampGain"), "", TriumvirateBassAudioProcessor::MINUS_INFINITY_DB),
-    outputGainSlider(*audioProcessor.apvts.getParameter("outputGain"),"Output", "dB"),
+    outputGainSlider(*audioProcessor.apvts.getParameter("outputGain"), "Output", "dB"),
+    dryWetSlider(*audioProcessor.apvts.getParameter("dryWet"), "Dry/Wet", "%"),
     bypassButton("bypassButton"),
+    preferencesButton("preferencesButton"),
+    preferencesPanel(),
     inputGainSliderAttachment(audioProcessor.apvts,"inputGain", inputGainSlider),
     lowVolumeSliderAttachment(audioProcessor.apvts,"lowVolume",lowVolumeSlider),
     lowGainSliderAttachment(audioProcessor.apvts,"lowPreampGain",lowGainSlider),
@@ -80,22 +97,33 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor (Triumv
     highGainSliderAttachment(audioProcessor.apvts,"highPreampGain",highGainSlider),
     outputLevelMeter(foleys::LevelMeter::Minimal),
     outputGainSliderAttachment(audioProcessor.apvts,"outputGain",outputGainSlider),
+    dryWetSliderAttachment(audioProcessor.apvts,"dryWet", dryWetSlider),
     bypassButtonAttachment(*audioProcessor.apvts.getParameter("bypass"),bypassButton),
-    ledOff(juce::Image()),
-    ledOn(juce::Image()),
-    presetPanel(p.getPresetManager())
+    ledOff(juce::ImageCache::getFromMemory(BinaryData::led_off_new_png, BinaryData::led_off_new_pngSize)),
+    ledOn(juce::ImageCache::getFromMemory(BinaryData::led_on_new_png, BinaryData::led_on_new_pngSize)),
+    settingsImage(juce::ImageCache::getFromMemory(BinaryData::Settings_icon_EFEFEF_40x40_png, BinaryData::Settings_icon_EFEFEF_40x40_pngSize)),
+    presetPanel(p.getPresetManager()),
+    tooltipWindow(this)
 {
     
     // Initialize foley Level Meter Look n Feel
     initialiseLevelMeters();
+    
 
     // Initialize internal components
-    for (auto* comp : getComponents())
+    for (auto* comp : getDefaultComponents())
     {
         addAndMakeVisible(comp);
     }
+    preferencesPanel.setVisible(false);
 
-    initialiseBypassButton();
+    dryWetSlider.setPopupDisplayEnabled(true, true, this);
+
+    initialiseButtons();
+    
+    // PREFERENCES
+    preferencesPanel.addSettingsPage("Page 1", BinaryData::Settings_icon_EFEFEF_40x40_png, BinaryData::Settings_icon_EFEFEF_40x40_pngSize);
+    preferencesPanel.addSettingsPage("Page 2", BinaryData::Settings_icon_EFEFEF_40x40_png, BinaryData::Settings_icon_EFEFEF_40x40_pngSize);
 
     setSize (800, 520);
     setResizable(false, false);
@@ -127,15 +155,33 @@ void TriumvirateBassAudioProcessorEditor::initialiseLevelMeters()
     outputLevelMeter.setMeterSource(&audioProcessor.getOutputLevelMeterSource());
 }
 
-void TriumvirateBassAudioProcessorEditor::initialiseBypassButton() 
+void TriumvirateBassAudioProcessorEditor::initialiseButtons() 
 {
-    ledOff = juce::ImageCache::getFromMemory(BinaryData::led_off_new_png, BinaryData::led_off_new_pngSize);
-    ledOn = juce::ImageCache::getFromMemory(BinaryData::led_on_new_png, BinaryData::led_on_new_pngSize);
+    //ledOff = juce::ImageCache::getFromMemory(BinaryData::led_off_new_png, BinaryData::led_off_new_pngSize);
+    //ledOn = juce::ImageCache::getFromMemory(BinaryData::led_on_new_png, BinaryData::led_on_new_pngSize);
     
     bypassButton.setClickingTogglesState(true);
-    bypassButton.onClick = [this]() {paintBypassButton(); };
+    bypassButton.onClick = [this]() {
+        paintBypassButton(); 
+    };
 
-    paintBypassButton();
+    paintBypassButton();  
+
+    preferencesButton.setClickingTogglesState(true);
+    preferencesButton.setTooltip("Preferences");
+    preferencesButton.onClick = [this]() {
+        paintPreferencesButton(); 
+        if (preferencesPanel.isVisible()) {
+            preferencesPanel.setVisible(false);
+            preferencesButton.setTooltip("Preferences");
+        }
+        else {
+            preferencesPanel.setVisible(true);
+            preferencesButton.setTooltip("Close Preferences");
+        }
+    };
+
+    paintPreferencesButton();
 }
 
 void TriumvirateBassAudioProcessorEditor::paintBypassButton() 
@@ -143,13 +189,29 @@ void TriumvirateBassAudioProcessorEditor::paintBypassButton()
     auto bounds = bypassButton.getBounds();
 
     if (bypassButton.getToggleState()) {
-        bypassButton.setImages(true, false, true, ledOff, 1.f, juce::Colours::transparentWhite, ledOff, 1.f, juce::Colours::transparentWhite, ledOff, 1.f, juce::Colours::transparentWhite);
+        bypassButton.setImages(true, false, true, 
+            ledOff, 1.f, juce::Colours::transparentWhite,  // Normal
+            ledOff, 1.f, juce::Colours::transparentWhite,  // Hover
+            ledOff, 1.f, juce::Colours::transparentWhite); // Selected
     }
     else {
-        bypassButton.setImages(true, false, true, ledOn, 1.f, juce::Colours::transparentWhite, ledOn, 1.f, juce::Colours::transparentWhite, ledOn, 1.f, juce::Colours::transparentWhite);
+        bypassButton.setImages(true, false, true, 
+            ledOn, 1.f, juce::Colours::transparentWhite,  // Normal
+            ledOn, 1.f, juce::Colours::transparentWhite,  // Hover
+            ledOn, 1.f, juce::Colours::transparentWhite); // Selected
     }
 
     bypassButton.setBounds(bounds);
+}
+
+void TriumvirateBassAudioProcessorEditor::paintPreferencesButton() 
+{
+    auto bounds = preferencesButton.getBounds();
+    preferencesButton.setImages(true, false, true, 
+        settingsImage, 1.f, juce::Colours::transparentWhite, // Normal
+        settingsImage, .8f, juce::Colours::transparentWhite, // Hover
+        settingsImage, 1.f, juce::Colours::darkslategrey);   // Selected
+    preferencesButton.setBounds(bounds);
 }
 
 void TriumvirateBassAudioProcessorEditor::resized()
@@ -207,6 +269,11 @@ void TriumvirateBassAudioProcessorEditor::resized()
     auto bypassButtonArea = bottomArea.removeFromTop(50);
     bypassButtonArea.setPosition(121, 369);
 
+    auto preferencesArea = bottomArea.removeFromRight(80);
+    preferencesArea.setPosition(670, 455);
+    auto dryWetArea = bottomArea.removeFromRight(80);
+    dryWetArea.setPosition(730, 450);
+
     presetPanel.setBounds(presetPanelArea);
 
     versionLabel.setBounds(versionArea);
@@ -227,9 +294,14 @@ void TriumvirateBassAudioProcessorEditor::resized()
     outputGainSlider.setBounds(outputArea);
 
     bypassButton.setBounds(bypassButtonArea);
+
+    preferencesPanel.setBounds(bounds);
+    preferencesButton.setBounds(preferencesArea);
+    dryWetSlider.setBounds(dryWetArea);
+
 }
 
-std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getComponents()
+std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getDefaultComponents()
 {
     return {
         &versionLabel,
@@ -244,6 +316,9 @@ std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getComponents
         &highGainSlider,
         &outputLevelMeter,
         &outputGainSlider,
-        &bypassButton
+        &bypassButton,
+        &preferencesPanel,
+        &preferencesButton,
+        &dryWetSlider
     };
 }

@@ -26,6 +26,11 @@ struct CustomLevelMeterLnF : foleys::LevelMeterLookAndFeel {
     void setupDefaultStereoFieldColours() override;
 };
 
+struct TriumviratePreferencesPanel : juce::PreferencesPanel {
+    virtual juce::Component* createComponentForPage(const juce::String& pageName) override;
+    void paint(juce::Graphics&) override;
+};
+
 /**
 */
 class TriumvirateBassAudioProcessorEditor : public juce::AudioProcessorEditor
@@ -37,8 +42,9 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void initialiseLevelMeters();
-    void initialiseBypassButton();
+    void initialiseButtons();
     void paintBypassButton();
+    void paintPreferencesButton();
     void resized() override;
 
 private:
@@ -50,12 +56,15 @@ private:
 
     juce::Label versionLabel;
 
+    TriumviratePreferencesPanel preferencesPanel;
+
     CustomLevelMeterLnF levelMeterLnF;
     foleys::LevelMeter inputLevelMeter, outputLevelMeter;
 
     InOutGainSlider
         inputGainSlider,
-        outputGainSlider;
+        outputGainSlider,
+        dryWetSlider;
 
     CustomGainSlider
         lowVolumeSlider,
@@ -68,6 +77,9 @@ private:
     BypassButton bypassButton;
     juce::Image ledOff, ledOn;
 
+    juce::ImageButton preferencesButton;
+    juce::Image settingsImage;
+
     using APVTS = juce::AudioProcessorValueTreeState;
     using SliderAttachment = APVTS::SliderAttachment;
 
@@ -79,11 +91,15 @@ private:
         lowGainSliderAttachment,
         midGainSliderAttachment,
         highGainSliderAttachment,
-        outputGainSliderAttachment;
+        outputGainSliderAttachment,
+        dryWetSliderAttachment;
 
-    juce::ButtonParameterAttachment bypassButtonAttachment;
+    juce::ButtonParameterAttachment
+        bypassButtonAttachment;
 
-    std::vector<juce::Component*> getComponents();
+    juce::TooltipWindow tooltipWindow;
+
+    std::vector<juce::Component*> getDefaultComponents();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TriumvirateBassAudioProcessorEditor)
 };

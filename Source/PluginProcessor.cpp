@@ -35,6 +35,7 @@ TriumvirateBassAudioProcessor::TriumvirateBassAudioProcessor()
     apvts.addParameterListener("midLowPassFreq", this);
     apvts.addParameterListener("midVolume", this);
     apvts.addParameterListener("midPreampGain", this);
+    apvts.addParameterListener("dryWet", this);
 
     apvts.state.setProperty(service::PresetManager::presetNameProperty, "", nullptr);
     apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
@@ -193,6 +194,11 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+
+    dryBuffer.makeCopyOf(buffer, true);
+    juce::dsp::AudioBlock<float> dryBlock(dryBuffer);
+    juce::dsp::AudioBlock<float> wetBlock(buffer);
+
     smoothGainTransition(buffer, settings.input, previousInputGain);
 
     inputLevelMeterSource.measureBlock(buffer);
@@ -278,6 +284,12 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     smoothGainTransition(buffer, settings.output, previousOutputGain);
 
     outputLevelMeterSource.measureBlock(buffer);
+
+    dryBuffer.applyGain(1.0f - settings.dryWet);
+    buffer.applyGain(settings.dryWet);
+    
+    wetBlock.add(dryBlock);
+
 }
 
 //==============================================================================
@@ -540,7 +552,10 @@ TriumvirateBassAudioProcessor::createParameterLayout()
         juce::NormalisableRange<float>(-128.f, 0.f, 0.01f, 5.f, false), 0.f, dBGainParamAttributes));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("outputGain", "Output",
-        juce::NormalisableRange<float>(-12.0f, 12.f, 0.01f, 2.f, true), 0.f, dBGainParamAttributes));
+        juce::NormalisableRange<float>(-12.0f, 12.f, 0.01f, 2.f, true), 0.f, dBGainParamAttributes));    
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>("dryWet", "Dry/Wet",
+        juce::NormalisableRange<float>(0.f, 1.f, 0.01f, 1.f, true), 1.f, dBGainParamAttributes));
 
     //juce::StringArray stringArray;
     //for (int i = 0; i < 4; i++)
@@ -586,6 +601,11 @@ void TriumvirateBassAudioProcessor::parameterChanged(const juce::String& paramet
 
     if (parameterID == "outputGain") {
         settings.output = newValue;
+        return;
+    }
+
+    if (parameterID == "dryWet") {
+        settings.dryWet = newValue;
         return;
     }
 

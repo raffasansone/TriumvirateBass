@@ -99,6 +99,11 @@ void InOutGainSlider::paint(juce::Graphics& g)
         *this);
 }
 
+juce::String InOutGainSlider::getTextFromValue(double value)
+{
+    return this->getDisplayString() + " " + this->getLabel();
+}
+
 juce::Rectangle<int> InOutGainSlider::getSliderBounds() const
 {
     auto bounds = getLocalBounds();
@@ -117,9 +122,13 @@ juce::Rectangle<int> InOutGainSlider::getSliderBounds() const
 juce::String InOutGainSlider::getDisplayString()
 {
 
-    if (suffix.isNotEmpty())
+    if (suffix.equalsIgnoreCase("dB"))
     {
         return juce::String(getValue(), 2) + juce::String(" dB");
+    } 
+    else if (suffix.equalsIgnoreCase("%"))
+    {
+        return  juce::String( getValue() * 100 ) + juce::String ("%");
     }
     else
     {

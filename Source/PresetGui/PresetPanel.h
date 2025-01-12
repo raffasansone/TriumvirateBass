@@ -38,10 +38,10 @@ namespace gui
 			const auto container = getLocalBounds().reduced(4);
 			auto bounds = container;
 
-			saveButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.2f)).reduced(2,8));
-			previousPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(2,8));
 			presetList.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.4f)).reduced(2,8));
+			previousPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(2,8));
 			nextPresetButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(2,8));
+			saveButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.2f)).reduced(2,8));
 			deleteButton.setBounds(bounds.reduced(2,8));
 		}
 	private:

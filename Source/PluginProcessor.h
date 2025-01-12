@@ -47,7 +47,7 @@ struct TriumvirateBassSettings
         float m_float;
     };
 
-    DebugFloat input{ 0.0f }, output{ 0.0f };
+    DebugFloat input{ 0.0f }, output{ 0.0f }, dryWet { 1.0f };
     float highPassFreq{ 600.f }, lowPassFreq{ 140.f }, midHighPassFreq{ 100.f }, midLowPassFreq{ 800.f };
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
@@ -126,7 +126,7 @@ private:
 
     std::unique_ptr<service::PresetManager> presetManager;
 
-    juce::AudioBuffer<float> midBuffer, highBuffer;
+    juce::AudioBuffer<float> midBuffer, highBuffer, dryBuffer;
     float previousInputGain, previousOutputGain;
     using Waveshaper = juce::dsp::WaveShaper<float, std::function<float (float)>>;
     using Filter = juce::dsp::IIR::Filter<float>;
