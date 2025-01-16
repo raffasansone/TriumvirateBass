@@ -9,6 +9,10 @@
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
+      <FILE id="CG3IoY" name="Crossover_EFEFEF_40x40.png" compile="0" resource="1"
+            file="Resources/Crossover_EFEFEF_40x40.png"/>
+      <FILE id="ubAWiF" name="Speaker_EFEFEF_40x40.png" compile="0" resource="1"
+            file="Resources/Speaker_EFEFEF_40x40.png"/>
       <FILE id="m1DSCZ" name="Settings_icon_EFEFEF_40x40.png" compile="0"
             resource="1" file="Resources/Settings_icon_EFEFEF_40x40.png"/>
       <FILE id="ls3LHo" name="led_off_new.png" compile="0" resource="1" file="Resources/led_off_new.png"/>

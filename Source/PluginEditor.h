@@ -27,8 +27,18 @@ struct CustomLevelMeterLnF : foleys::LevelMeterLookAndFeel {
 };
 
 struct TriumviratePreferencesPanel : juce::PreferencesPanel {
+    TriumviratePreferencesPanel(TriumvirateBassAudioProcessor&);
+    ~TriumviratePreferencesPanel();
+
     virtual juce::Component* createComponentForPage(const juce::String& pageName) override;
     void paint(juce::Graphics&) override;
+    std::vector<juce::Component*> getPreferencesComponents();
+
+private:
+    // This reference is provided as a quick way for your editor to
+    // access the processor object that created it.
+    TriumvirateBassAudioProcessor& audioProcessor;
+    juce::AudioProcessorValueTreeState::SliderAttachment* sliderAttachment;
 };
 
 /**

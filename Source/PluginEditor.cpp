@@ -20,18 +20,42 @@ bool BypassButton::hitTest(int x, int y)
     return x > widthPadding && x < (widthPadding + getLocalBounds().getHeight());
 }
 
+TriumviratePreferencesPanel::TriumviratePreferencesPanel(TriumvirateBassAudioProcessor& p) : audioProcessor(p)
+{
+    sliderAttachment = nullptr;
+}
+
+TriumviratePreferencesPanel::~TriumviratePreferencesPanel()
+{
+    delete sliderAttachment;
+}
+
 juce::Component* TriumviratePreferencesPanel::createComponentForPage(const juce::String& pageName)
 {
-    if (pageName.equalsIgnoreCase("Page 1"))
-        return new juce::Label(pageName, "This is page 1 of my settings.");
+    if (pageName.equalsIgnoreCase("Cabinet"))
+    {
+        using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    if (pageName.equalsIgnoreCase("Page 2"))
+        // TODO Remove this logic. It's wrong because the slider attachment will delete the attachment
+        // to the actual input gain on the GUI when exited. This is just a reminder to add the new parameters here
+        juce::Slider* inputGainSlider = new InOutGainSlider(*audioProcessor.apvts.getParameter("inputGain"), "Input", "dB");
+        sliderAttachment = new SliderAttachment(audioProcessor.apvts, "inputGain", *inputGainSlider);
+        
+        return inputGainSlider;
+    }
+
+    if (pageName.equalsIgnoreCase("Circuit"))
         return new juce::Label(pageName, "This is page 2 of my settings.");
 }
 
 void TriumviratePreferencesPanel::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::darkslategrey);
+    g.fillAll(juce::Colour(juce::uint8(0x12), juce::uint8(0x12), juce::uint8(0x12), juce::uint8(0xEE)));
+}
+
+std::vector<juce::Component*> TriumviratePreferencesPanel::getPreferencesComponents()
+{
+    return std::vector<juce::Component*>();
 }
 
 CustomLevelMeterLnF::CustomLevelMeterLnF()
@@ -87,7 +111,7 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor(Triumvi
     dryWetSlider(*audioProcessor.apvts.getParameter("dryWet"), "Dry/Wet", "%"),
     bypassButton("bypassButton"),
     preferencesButton("preferencesButton"),
-    preferencesPanel(),
+    preferencesPanel(p),
     inputGainSliderAttachment(audioProcessor.apvts,"inputGain", inputGainSlider),
     lowVolumeSliderAttachment(audioProcessor.apvts,"lowVolume",lowVolumeSlider),
     lowGainSliderAttachment(audioProcessor.apvts,"lowPreampGain",lowGainSlider),
@@ -122,8 +146,8 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor(Triumvi
     initialiseButtons();
     
     // PREFERENCES
-    preferencesPanel.addSettingsPage("Page 1", BinaryData::Settings_icon_EFEFEF_40x40_png, BinaryData::Settings_icon_EFEFEF_40x40_pngSize);
-    preferencesPanel.addSettingsPage("Page 2", BinaryData::Settings_icon_EFEFEF_40x40_png, BinaryData::Settings_icon_EFEFEF_40x40_pngSize);
+    preferencesPanel.addSettingsPage("Cabinet", BinaryData::Speaker_EFEFEF_40x40_png, BinaryData::Speaker_EFEFEF_40x40_pngSize);
+    preferencesPanel.addSettingsPage("Circuit", BinaryData::Crossover_EFEFEF_40x40_png, BinaryData::Crossover_EFEFEF_40x40_pngSize);
 
     setSize (800, 520);
     setResizable(false, false);
@@ -295,7 +319,7 @@ void TriumvirateBassAudioProcessorEditor::resized()
 
     bypassButton.setBounds(bypassButtonArea);
 
-    preferencesPanel.setBounds(bounds);
+    preferencesPanel.setBounds(getLocalBounds().reduced(100, 80));
     preferencesButton.setBounds(preferencesArea);
     dryWetSlider.setBounds(dryWetArea);
 
