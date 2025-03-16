@@ -8,6 +8,9 @@
 
 namespace BinaryData
 {
+    extern const char*   BassStack_IR_48kHz_wav;
+    const int            BassStack_IR_48kHz_wavSize = 25710;
+
     extern const char*   Crossover_EFEFEF_40x40_png;
     const int            Crossover_EFEFEF_40x40_pngSize = 997;
 
@@ -27,7 +30,7 @@ namespace BinaryData
     const int            triumvirate_new_pngSize = 509688;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 6;
+    const int namedResourceListSize = 7;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

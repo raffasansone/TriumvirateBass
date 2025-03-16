@@ -9,6 +9,8 @@
               pluginCode="TRVB">
   <MAINGROUP id="iexqZ3" name="TriumvirateBass">
     <GROUP id="{D84685B7-6FC2-096A-4CA3-B11042C335A0}" name="Resources">
+      <FILE id="RRY484" name="BassStack_IR_48kHz.wav" compile="0" resource="1"
+            file="Resources/BassStack_IR_48kHz.wav"/>
       <FILE id="CG3IoY" name="Crossover_EFEFEF_40x40.png" compile="0" resource="1"
             file="Resources/Crossover_EFEFEF_40x40.png"/>
       <FILE id="ubAWiF" name="Speaker_EFEFEF_40x40.png" compile="0" resource="1"
@@ -39,6 +41,10 @@
         <FILE id="xAVA8f" name="InOutGainKnob.cpp" compile="1" resource="0"
               file="Source/GraphicElements/InOutGainKnob.cpp"/>
         <FILE id="NkK9nL" name="InOutGainKnob.h" compile="0" resource="0" file="Source/GraphicElements/InOutGainKnob.h"/>
+        <FILE id="YVp64y" name="RaffaLinearSlider.cpp" compile="1" resource="0"
+              file="Source/GraphicElements/RaffaLinearSlider.cpp"/>
+        <FILE id="w9xbQx" name="RaffaLinearSlider.h" compile="0" resource="0"
+              file="Source/GraphicElements/RaffaLinearSlider.h"/>
       </GROUP>
       <FILE id="Y0M9eI" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

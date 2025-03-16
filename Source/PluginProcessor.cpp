@@ -36,6 +36,7 @@ TriumvirateBassAudioProcessor::TriumvirateBassAudioProcessor()
     apvts.addParameterListener("midVolume", this);
     apvts.addParameterListener("midPreampGain", this);
     apvts.addParameterListener("dryWet", this);
+    apvts.addParameterListener("cabinetEnabled", this);
 
     apvts.state.setProperty(service::PresetManager::presetNameProperty, "", nullptr);
     apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
@@ -132,8 +133,12 @@ void TriumvirateBassAudioProcessor::prepareToPlay (double sampleRate, int sample
     highLeftChain.prepare(spec);
     highRightChain.prepare(spec);
 
+    postLeftChain.prepare(spec);
+    postRightChain.prepare(spec);
+
     initialisePostLowBandLowPass();
     initialisePostMidBandLowPass();
+    initialisePostChain();
     updateFilters();
     updateDistortions();
 }
@@ -205,11 +210,10 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     
     if (!settings.bypass) 
     {
-        // TODO variable cutoff
-        //updateFilters();
 
         if (distortionChanged) 
         {
+            updateFilters();
             updateDistortions();
             distortionChanged = false;
         }
@@ -277,8 +281,20 @@ void TriumvirateBassAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
             // Sum
             lowChannelContext.getOutputBlock().add(midChannelBlock).add(highChannelBlock);
-        }
 
+            if (settings.cabinetEnabled) {
+                auto wetChannelBlock = wetBlock.getSingleChannelBlock(i);
+                juce::dsp::ProcessContextReplacing<float> wetChannelContext(wetChannelBlock);
+
+                if (i == 0) {
+                    postLeftChain.process(wetChannelContext);
+                }
+                else {
+                    postRightChain.process(wetChannelContext);
+                }
+
+            }
+        }
     }
 
     smoothGainTransition(buffer, settings.output, previousOutputGain);
@@ -348,6 +364,25 @@ void TriumvirateBassAudioProcessor::initialisePostMidBandLowPass()
 
     *midLeftLowPass.coefficients = *postAmpMidLowPassCoefficients[0];
     *midRightLowPass.coefficients = *postAmpMidLowPassCoefficients[0];
+}
+
+void TriumvirateBassAudioProcessor::initialisePostChain()
+{
+    auto& leftIR = postLeftChain.get<0>();
+    leftIR.loadImpulseResponse((const void *) BinaryData::BassStack_IR_48kHz_wav, 
+        BinaryData::BassStack_IR_48kHz_wavSize, 
+        juce::dsp::Convolution::Stereo::no, 
+        juce::dsp::Convolution::Trim::no, 
+        BinaryData::BassStack_IR_48kHz_wavSize,
+        juce::dsp::Convolution::Normalise::no);
+
+    auto& rightIR = postRightChain.get<0>();
+    rightIR.loadImpulseResponse((const void*)BinaryData::BassStack_IR_48kHz_wav,
+        BinaryData::BassStack_IR_48kHz_wavSize,
+        juce::dsp::Convolution::Stereo::no,
+        juce::dsp::Convolution::Trim::no,
+        BinaryData::BassStack_IR_48kHz_wavSize,
+        juce::dsp::Convolution::Normalise::no);
 }
 
 void TriumvirateBassAudioProcessor::updateHighPassFilters(const TriumvirateBassSettings& chainSettings)
@@ -522,34 +557,39 @@ TriumvirateBassAudioProcessor::createParameterLayout()
         })
         .withLabel("dB");
 
+    auto booleanAttributes = juce::AudioParameterBoolAttributes().withStringFromValueFunction([](auto x, auto) { return x ? "On" : "Off"; })
+            .withLabel("enabled");
+
     layout.add(std::make_unique<juce::AudioParameterFloat>("inputGain", "Input",
-        juce::NormalisableRange<float>(-12.0f, 12.f, 0.01f, 2.f, true), 0.f, dBGainParamAttributes));
+        juce::NormalisableRange<float>(- 12.0f, 12.f, 0.01f, 2.f, true), 0.f, dBGainParamAttributes));
 
     //TODO: variable crossover
-    //layout.add(std::make_unique<juce::AudioParameterFloat>("lowPassFreq", "lowPassFreq",
-    //    juce::NormalisableRange<float>(70.f, 210.f, 1.f, 0.25f, false), 140.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("lowPassFreq", "lowPassFreq",
+        juce::NormalisableRange<float>(50.f, 240.f, 1.f, 1.f, false), 140.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("lowPreampGain", "Low Preamp Gain",
         juce::NormalisableRange<float>(0.0f, 100.f, 0.05f, 2.5f, false), 0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("lowVolume", "Low Volume",
         juce::NormalisableRange<float>(-128.f, 0.f, 0.01f, 5.f, false), 0.f, dBGainParamAttributes));
 
     //TODO: variable crossover
-    //layout.add(std::make_unique<juce::AudioParameterFloat>("highPassFreq", "highPassFreq",
-    //    juce::NormalisableRange<float>(400.f, 800.f, 1.f, 0.25f, false), 600.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("highPassFreq", "highPassFreq",
+        juce::NormalisableRange<float>(400.f, 1200.f, 1.f, 1.f, false), 600.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("highPreampGain", "High Preamp Gain",
         juce::NormalisableRange<float>(0.0f, 100.f, 0.05f, 2.5f, false), 0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("highVolume", "High Volume",
         juce::NormalisableRange<float>(-128.f, 0.f, 0.01f, 5.f, false), 0.f, dBGainParamAttributes));
 
     //TODO: variable crossover
-    //layout.add(std::make_unique<juce::AudioParameterFloat>("midHighPassFreq", "midHighPassFreq",
-    //    juce::NormalisableRange<float>(80.f, 200.f, 1.f, 0.25f, false), 80.f));
-    //layout.add(std::make_unique<juce::AudioParameterFloat>("midLowPassFreq", "midLowPassFreq",
-    //    juce::NormalisableRange<float>(600.f, 1000.f, 1.f, 0.25f, false), 800.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("midHighPassFreq", "midHighPassFreq",
+        juce::NormalisableRange<float>(70.f, 360.f, 1.f, 1.f, false), 80.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("midLowPassFreq", "midLowPassFreq",
+        juce::NormalisableRange<float>(600.f, 1000.f, 1.f, 1.f, false), 800.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("midPreampGain", "Mid Preamp Gain",
         juce::NormalisableRange<float>(0.0f, 100.f, 0.05f, 2.5f, false), 0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("midVolume", "Mid Volume",
         juce::NormalisableRange<float>(-128.f, 0.f, 0.01f, 5.f, false), 0.f, dBGainParamAttributes));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("cabinetEnabled", "Use Cabinet", true, booleanAttributes));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("outputGain", "Output",
         juce::NormalisableRange<float>(-12.0f, 12.f, 0.01f, 2.f, true), 0.f, dBGainParamAttributes));    
@@ -606,6 +646,11 @@ void TriumvirateBassAudioProcessor::parameterChanged(const juce::String& paramet
 
     if (parameterID == "dryWet") {
         settings.dryWet = newValue;
+        return;
+    }
+
+    if (parameterID == "cabinetEnabled") {
+        settings.cabinetEnabled = newValue;
         return;
     }
 

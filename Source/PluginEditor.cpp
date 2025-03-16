@@ -20,44 +20,6 @@ bool BypassButton::hitTest(int x, int y)
     return x > widthPadding && x < (widthPadding + getLocalBounds().getHeight());
 }
 
-TriumviratePreferencesPanel::TriumviratePreferencesPanel(TriumvirateBassAudioProcessor& p) : audioProcessor(p)
-{
-    sliderAttachment = nullptr;
-}
-
-TriumviratePreferencesPanel::~TriumviratePreferencesPanel()
-{
-    delete sliderAttachment;
-}
-
-juce::Component* TriumviratePreferencesPanel::createComponentForPage(const juce::String& pageName)
-{
-    if (pageName.equalsIgnoreCase("Cabinet"))
-    {
-        using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
-
-        // TODO Remove this logic. It's wrong because the slider attachment will delete the attachment
-        // to the actual input gain on the GUI when exited. This is just a reminder to add the new parameters here
-        juce::Slider* inputGainSlider = new InOutGainSlider(*audioProcessor.apvts.getParameter("inputGain"), "Input", "dB");
-        sliderAttachment = new SliderAttachment(audioProcessor.apvts, "inputGain", *inputGainSlider);
-        
-        return inputGainSlider;
-    }
-
-    if (pageName.equalsIgnoreCase("Circuit"))
-        return new juce::Label(pageName, "This is page 2 of my settings.");
-}
-
-void TriumviratePreferencesPanel::paint(juce::Graphics& g)
-{
-    g.fillAll(juce::Colour(juce::uint8(0x12), juce::uint8(0x12), juce::uint8(0x12), juce::uint8(0xEE)));
-}
-
-std::vector<juce::Component*> TriumviratePreferencesPanel::getPreferencesComponents()
-{
-    return std::vector<juce::Component*>();
-}
-
 CustomLevelMeterLnF::CustomLevelMeterLnF()
 {
     CustomLevelMeterLnF::setupDefaultMeterColours();
@@ -139,16 +101,16 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor(Triumvi
     {
         addAndMakeVisible(comp);
     }
-    preferencesPanel.setVisible(false);
+    //cabinetToggleButton.setVisible(true);
+    //preferencesPanel.addAndMakeVisible(cabinetToggleButton);
+    //addAndMakeVisible(preferencesPanel);
+   
+    //preferencesPanel.setVisible(false);
 
     dryWetSlider.setPopupDisplayEnabled(true, true, this);
 
     initialiseButtons();
     
-    // PREFERENCES
-    preferencesPanel.addSettingsPage("Cabinet", BinaryData::Speaker_EFEFEF_40x40_png, BinaryData::Speaker_EFEFEF_40x40_pngSize);
-    preferencesPanel.addSettingsPage("Circuit", BinaryData::Crossover_EFEFEF_40x40_png, BinaryData::Crossover_EFEFEF_40x40_pngSize);
-
     setSize (800, 520);
     setResizable(false, false);
 }
@@ -319,7 +281,10 @@ void TriumvirateBassAudioProcessorEditor::resized()
 
     bypassButton.setBounds(bypassButtonArea);
 
-    preferencesPanel.setBounds(getLocalBounds().reduced(100, 80));
+    auto prefsBounds = getLocalBounds();
+    prefsBounds = prefsBounds.removeFromBottom(100).removeFromLeft(680);
+    preferencesPanel.setBounds(prefsBounds);
+    
     preferencesButton.setBounds(preferencesArea);
     dryWetSlider.setBounds(dryWetArea);
 
@@ -343,6 +308,7 @@ std::vector<juce::Component*> TriumvirateBassAudioProcessorEditor::getDefaultCom
         &bypassButton,
         &preferencesPanel,
         &preferencesButton,
+        //&cabinetToggleButton,
         &dryWetSlider
     };
 }

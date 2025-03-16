@@ -52,7 +52,7 @@ struct TriumvirateBassSettings
     float lowPreampGain{ 0.0f }, midPreampGain{ 0.0f }, highPreampGain{ 0.0f };
     float lowPostGain{ 1.0f }, midPostGain{ 1.0f }, highPostGain{ 1.0f };
     Slope lowPassSlope{ Slope::Slope_12 }, highPassSlope{ Slope::Slope_12 }, midLowPassSlope{ Slope::Slope_12 }, midHighPassSlope{Slope::Slope_12};
-    bool bypass{ false };
+    bool bypass{ false }, cabinetEnabled{ true };
 
     float& operator=(const float f) {
 
@@ -132,6 +132,7 @@ private:
     using Filter = juce::dsp::IIR::Filter<float>;
     using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>; // Filter up to 4th order
     using Gain = juce::dsp::Gain<float>;
+    using IR = juce::dsp::Convolution;
 
     using LowChain = juce::dsp::ProcessorChain<CutFilter, Gain, Waveshaper, Filter, Gain>;
     LowChain lowLeftChain, lowRightChain;
@@ -141,6 +142,9 @@ private:
 
     using HighChain = juce::dsp::ProcessorChain<CutFilter, Gain, Waveshaper, Gain>;
     HighChain highLeftChain, highRightChain;
+
+    using PostChain = juce::dsp::ProcessorChain<IR>;
+    PostChain postLeftChain, postRightChain;
 
     enum LowChainPositions
     {
@@ -186,13 +190,14 @@ private:
         chain.template setBypassed<2>(true);
         chain.template setBypassed<3>(true);
 
+        // This switch falls through (no break statements)
+        // Adds 12 dB/Oct for each increasing Slope (bottom to top)
         switch (slope)
         {
         case Slope_48:
         {
             updateCutFilterCoefficients<3>(chain, coefficients);
         }
-
         case Slope_36:
         {
             updateCutFilterCoefficients<2>(chain, coefficients);
@@ -210,6 +215,7 @@ private:
 
     void initialisePostLowBandLowPass();
     void initialisePostMidBandLowPass();
+    void initialisePostChain();
     void updateHighPassFilters(const TriumvirateBassSettings& chainSettings);
     void updateBandPassFilters(const TriumvirateBassSettings& chainSettings);
     void updateLowPassFilters(const TriumvirateBassSettings& chainSettings);
