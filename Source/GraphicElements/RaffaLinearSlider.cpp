@@ -10,6 +10,19 @@
 
 #include "RaffaLinearSlider.h"
 
+RaffaLinearSliderLookAndFeel::RaffaLinearSliderLookAndFeel()
+{
+    setColour(juce::Slider::thumbColourId, juce::Colour(juce::uint8(240),240,240,0.5f));
+    setColour(juce::Slider::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::trackColourId, juce::Colours::transparentBlack);//juce::Colour(juce::uint8(32), 32, 32, 0.5f));
+}
+
+int RaffaLinearSliderLookAndFeel::getSliderThumbRadius(juce::Slider& slider)
+{
+    return juce::jmin(8, slider.isHorizontal() ? static_cast<int> ((float)slider.getHeight() * 0.5f)
+        : static_cast<int> ((float)slider.getWidth() * 0.5f));
+}
+
 void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
     int x, int y, int width, int height,
     float sliderPos,
@@ -54,7 +67,7 @@ void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
         r.setCentre(bounds.getCentre());
         r.setY(r.getCentreY()-6);
         if (ioslider->isAlignedRight()) {
-            r.setX(r.getRight()+25);
+            r.setX(r.getRight()+36);
         }
         else {
             r.setX(0);
@@ -89,24 +102,6 @@ bool RaffaLinearSlider::hitTest(int x, int y)
     float newX = getLocalBounds().getWidth() * percentStart + padding;
 
     return y > centre.getY()-10 && y < centre.getY()+10 && x > newX && x < getLocalBounds().getWidth();
-}
-
-// TODO Check again ...
-float RaffaLinearSlider::getLinearSliderPos(double value) const
-{
-    double pos;
-
-    if (normRange.end <= normRange.start)
-        pos = 0.5;
-    else if (value < normRange.start)
-        pos = 0.0;
-    else if (value > normRange.end)
-        pos = 1.0;
-    else
-        pos = normRange.convertTo0to1(value);
-
-    jassert(pos >= 0 && pos <= 1.0);
-    return (float)(sliderRegionStart + pos * sliderRegionSize);
 }
 
 juce::String RaffaLinearSlider::getTextFromValue(double value)

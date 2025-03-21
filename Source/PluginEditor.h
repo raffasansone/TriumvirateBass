@@ -143,15 +143,15 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RaffaEqualizerBox)
 };
 
-class SettingsToolbar : public juce::Component
+class SettingsToolbar : public juce::Component, public juce::Button::Listener
 {
 public:
     SettingsToolbar(TriumvirateBassAudioProcessor& p) : audioProcessor(p),
         cabinetToggleButton("Cabinet Emulation", false),
-        highPassFreqSlider(*audioProcessor.apvts.getParameter("highPassFreq"), "Hi Pass", "Hz"),
-        lowPassFreqSlider(*audioProcessor.apvts.getParameter("lowPassFreq"), "Lo Pass", "Hz"),
-        midHighPassFreqSlider(*audioProcessor.apvts.getParameter("midHighPassFreq"), "Mid Hi Pass", "Hz"),
-        midLowPassFreqSlider(*audioProcessor.apvts.getParameter("midLowPassFreq"), "Mid Lo Pass", "Hz", true),
+        highPassFreqSlider(*audioProcessor.apvts.getParameter("highPassFreq"), "High Band", "Hz"),
+        lowPassFreqSlider(*audioProcessor.apvts.getParameter("lowPassFreq"), "Low Band", "Hz"),
+        midHighPassFreqSlider(*audioProcessor.apvts.getParameter("midHighPassFreq"), "Mid HP", "Hz"),
+        midLowPassFreqSlider(*audioProcessor.apvts.getParameter("midLowPassFreq"), "Mid LP", "Hz", true),
         cabinetToggleButtonAttachment(*audioProcessor.apvts.getParameter("cabinetEnabled"), cabinetToggleButton),
         highPassFreqSliderAttachment(audioProcessor.apvts, "highPassFreq", highPassFreqSlider),
         lowPassFreqSliderAttachment(audioProcessor.apvts, "lowPassFreq", lowPassFreqSlider),
@@ -166,38 +166,79 @@ public:
 
         addAndMakeVisible(cabinetToggleButton);
         addAndMakeVisible(cabinetLabel);
-        addAndMakeVisible(equalizerBox);
-        addAndMakeVisible(lowPassFreqSlider);
-        addAndMakeVisible(midHighPassFreqSlider);
-        addAndMakeVisible(midLowPassFreqSlider);
-        addAndMakeVisible(highPassFreqSlider);
+        addAndMakeVisible(cabinetDescription);
+        addChildComponent(equalizerBox);
+        addChildComponent(lowPassFreqSlider);
+        addChildComponent(midHighPassFreqSlider);
+        addChildComponent(midLowPassFreqSlider);
+        addChildComponent(highPassFreqSlider);
+        addChildComponent(crossoverDescription);
     }
 
+    void buttonClicked(juce::Button* b) override{
+        if (auto* button = dynamic_cast<juce::ToolbarButton*>(b)) {
+            if (button->getItemId() == SettingsToolbarItemFactory::SettingsToolbarItemIds::cabinet) {
+                cabinetToggleButton.setVisible(true);
+                cabinetLabel.setVisible(true);
+                cabinetDescription.setVisible(true);
+
+                equalizerBox.setVisible(false);
+                lowPassFreqSlider.setVisible(false);
+                midHighPassFreqSlider.setVisible(false);
+                midLowPassFreqSlider.setVisible(false);
+                highPassFreqSlider.setVisible(false);
+                crossoverDescription.setVisible(false);
+            }
+            else if (button->getItemId() == SettingsToolbarItemFactory::SettingsToolbarItemIds::crossover) {
+                cabinetToggleButton.setVisible(false);
+                cabinetLabel.setVisible(false);
+                cabinetDescription.setVisible(false);
+
+                equalizerBox.setVisible(true);
+                lowPassFreqSlider.setVisible(true);
+                midHighPassFreqSlider.setVisible(true);
+                midLowPassFreqSlider.setVisible(true);
+                highPassFreqSlider.setVisible(true);
+                crossoverDescription.setVisible(true);
+            }
+        }
+    }
+    
     void resized() override
     {
-        toolbar.setBounds(getLocalBounds().removeFromTop(40).reduced(4,0));
-        auto cabinetBounds = getLocalBounds().removeFromBottom(40).removeFromLeft(160);
+        toolbar.setBounds(getLocalBounds().removeFromTop(36).reduced(4,0));
+        
+        // Cabinet
+        //================
+        auto cabinetBounds = getLocalBounds().removeFromBottom(JUCE_LIVE_CONSTANT(70)).removeFromLeft(800).reduced(20, 5);
         auto cabinetButtonArea = cabinetBounds.removeFromLeft(30);
         cabinetToggleButton.setBounds(cabinetButtonArea
-            .removeFromBottom(JUCE_LIVE_CONSTANT(30))
+            .removeFromBottom(JUCE_LIVE_CONSTANT(40))
             .removeFromTop(JUCE_LIVE_CONSTANT(20)));
-        cabinetLabel.setBounds(cabinetBounds);
+        cabinetLabel.setBounds(cabinetBounds.removeFromLeft(100));
+        cabinetDescription.setBounds(cabinetBounds.reduced(40,0));
 
-        auto crossoverBounds = getLocalBounds().removeFromRight(440).reduced(20, 5);
+        // Crossover
+        //================
+        auto crossoverBounds = getLocalBounds().removeFromRight(380).removeFromBottom(74).reduced(20, 5);
 
-        auto width = crossoverBounds.getWidth();
-        auto width3 = crossoverBounds.getWidth();
+        int width = crossoverBounds.getWidth()+40;
         int height = 60;
         float xPadding = 50.f;
         float yPadding = 10.f;
 
-        equalizerBox.setBounds(crossoverBounds);
+        int eqOffset = -310;
+        int descOffset = 40;
+        
+        equalizerBox.setBounds(crossoverBounds.getX() + eqOffset, crossoverBounds.getY(), width, crossoverBounds.getHeight());
         equalizerBox.initAtPosition(xPadding, yPadding, width, height);
 
-        lowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX(), crossoverBounds.getY()-30, crossoverBounds.getWidth(), 100));//.removeFromTop(20));
-        midHighPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX(), crossoverBounds.getY()-10, crossoverBounds.getWidth(), 100));// .removeFromTop(20));
-        midLowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX(), crossoverBounds.getY()-10, crossoverBounds.getWidth(), 100));// .removeFromTop(20));
-        highPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX(), crossoverBounds.getY()+10, crossoverBounds.getWidth(), 100));// .removeFromTop(20));
+        lowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-30, width, 100));//.removeFromTop(20));
+        midHighPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-10, width, 100));// .removeFromTop(20));
+        midLowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-10, width, 100));// .removeFromTop(20));
+        highPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()+10, width, 100));// .removeFromTop(20));
+
+        crossoverDescription.setBounds(crossoverBounds.getX() + descOffset, crossoverBounds.getY(), crossoverBounds.getWidth(), crossoverBounds.getHeight());
     }
 
     void paint(juce::Graphics& g) override{
@@ -216,9 +257,17 @@ private:
     TriumvirateBassAudioProcessor& audioProcessor;
 
     juce::Label cabinetLabel{ {}, "Enable Cabinet" };
+    juce::Label cabinetDescription{ {}, "This is the cabinet emulation. "
+    "If you use this plugin on its own, the switch should be enabled.\n"
+    "Deactivate the switch if you are running into an amp simulation, and want to use this effect just as a pedal."};
+    
     SlidingToggleButton cabinetToggleButton;
     juce::ButtonParameterAttachment
         cabinetToggleButtonAttachment;
+    
+    juce::Label crossoverDescription{ {}, "This is the crossover section.\n"
+        "The pedal has individual, non linear filters.\n"
+        "As such, it looks and sounds different from regular crossovers and produces unpredictable results."};
 
     RaffaLinearSlider highPassFreqSlider;
     RaffaLinearSlider lowPassFreqSlider;
@@ -240,11 +289,10 @@ private:
     class SettingsToolbarItemFactory : public juce::ToolbarItemFactory
     {
     public:
-        SettingsToolbarItemFactory() {}
+        SettingsToolbarItemFactory(juce::Button::Listener* l) : listener(l) {}
 
         //==============================================================================
-        // Each type of item a toolbar can contain must be given a unique ID. These
-        // are the ones we'll use in this demo.
+        // Each type of item a toolbar can contain must be given a unique ID.
         enum SettingsToolbarItemIds
         {
             cabinet = 1,
@@ -290,12 +338,15 @@ private:
             else {
                 drawable->setImage(juce::ImageCache::getFromMemory(BinaryData::Crossover_EFEFEF_40x40_png, BinaryData::Crossover_EFEFEF_40x40_pngSize));
             }
-            return new juce::ToolbarButton(itemId, text, std::move(drawable), {});
+            auto* c = new juce::ToolbarButton(itemId, text, std::move(drawable), {});
+            c->addListener(listener);
+            return c;
         }
 
+        juce::Button::Listener* listener;
     };
 
-    SettingsToolbarItemFactory factory;
+    SettingsToolbarItemFactory factory{ this };
 };
 
 struct BypassButton : juce::ImageButton { 
