@@ -69,7 +69,7 @@ void CustomGainLookAndFeel::drawRotarySlider(juce::Graphics& g,
         if (cgslider->isTextLabelToDraw()) {
             g.setFont(static_cast<float>(cgslider->getTextHeight()));
             auto text = cgslider->getDisplayString();
-            auto strWidth = g.getCurrentFont().getStringWidth(text);
+            auto strWidth = juce::GlyphArrangement::getStringWidthInt(g.getCurrentFont() , text);
 
             r.setSize(static_cast<float>(strWidth + 4), static_cast<float>(cgslider->getTextHeight() + 2));
             r.setCentre(bounds.getCentre());
@@ -112,8 +112,8 @@ void CustomGainSlider::paint(juce::Graphics& g)
 juce::Rectangle<int> CustomGainSlider::getSliderBounds() const
 {
     auto bounds = getLocalBounds();
-    auto size = juce::jmin(bounds.getWidth(), bounds.getHeight());
-    size *= 0.9;
+    int size = juce::jmin(bounds.getWidth(), bounds.getHeight());
+    size = static_cast<int>(size * 0.9);
 
     size -= getTextHeight() * 2;
     juce::Rectangle<int> r;

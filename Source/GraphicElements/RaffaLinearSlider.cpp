@@ -24,10 +24,10 @@ int RaffaLinearSliderLookAndFeel::getSliderThumbRadius(juce::Slider& slider)
 }
 
 void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
-    int x, int y, int width, int height,
-    float sliderPos,
-    float minSliderPos,
-    float maxSliderPos,
+    int x, int y, int /*width*/, int height,
+    float /*sliderPos*/,
+    float /*minSliderPos*/,
+    float /*maxSliderPos*/,
     const juce::Slider::SliderStyle style, juce::Slider& slider) {
 
 
@@ -35,8 +35,8 @@ void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
         
         auto range = ioslider->getRange();
          
-        float start = range.getStart();
-        float end = range.getEnd();
+        float start = static_cast<float>(range.getStart());
+        float end = static_cast<float>(range.getEnd());
 
         jassert(start > 20.f);
         jassert(end < 20000.f);
@@ -51,17 +51,21 @@ void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
         float newX = width1 * percentStart + padding;
         float newSliderPos = width1 * percentValue + padding;
 
-        juce::LookAndFeel_V4::drawLinearSlider(g, newX, y, newWidth, height, newSliderPos, 0, 0, style, slider);
+        juce::LookAndFeel_V4::drawLinearSlider(g, static_cast<int>(newX), y, static_cast<int>(newWidth), height, newSliderPos, 0, 0, style, slider);
 
         auto bounds = juce::Rectangle<float>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(width1), static_cast<float>(height));
         auto center = bounds.getCentre();
         
         juce::Rectangle<float> r;
-        r.setBounds(slider.getLocalBounds().getX(), slider.getLocalBounds().getY(), slider.getLocalBounds().getWidth(), slider.getLocalBounds().getHeight());
+        r.setBounds(
+            float(slider.getLocalBounds().getX()), 
+            float(slider.getLocalBounds().getY()), 
+            float(slider.getLocalBounds().getWidth()), 
+            float(slider.getLocalBounds().getHeight()));
 
         g.setFont(static_cast<float>(ioslider->getTextHeight()));
         juce::String text = ioslider->getLabel() + ": " + ioslider->getDisplayString();
-        auto strWidth = g.getCurrentFont().getStringWidth(text);
+        auto strWidth = juce::GlyphArrangement::getStringWidthInt(g.getCurrentFont(), text);
 
         r.setSize(static_cast<float>(strWidth), static_cast<float>(ioslider->getTextHeight()));
         r.setCentre(bounds.getCentre());
@@ -88,14 +92,14 @@ bool RaffaLinearSlider::hitTest(int x, int y)
 
     auto range = getRange();
 
-    float start = range.getStart();
-    float end = range.getEnd();
+    float start = static_cast<float>(range.getStart());
+    float end = static_cast<float>(range.getEnd());
 
     jassert(start > 20.f);
     jassert(end < 20000.f);
 
     float percentStart = juce::mapFromLog10(start, 20.f, 20000.f);
-    float percentEnd = juce::mapFromLog10(end, 20.f, 20000.f);
+    //float percentEnd = juce::mapFromLog10(end, 20.f, 20000.f);
     
     float padding = 40.f;
     //float newWidth = getLocalBounds().getWidth() * (percentEnd - percentStart);
@@ -104,7 +108,7 @@ bool RaffaLinearSlider::hitTest(int x, int y)
     return y > centre.getY()-10 && y < centre.getY()+10 && x > newX && x < getLocalBounds().getWidth();
 }
 
-juce::String RaffaLinearSlider::getTextFromValue(double value)
+juce::String RaffaLinearSlider::getTextFromValue(double /*value*/)
 {
     return this->getDisplayString() + " " + this->getLabel();
 }

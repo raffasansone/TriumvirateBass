@@ -1,7 +1,7 @@
 @echo off
 
 set "vs_version=%~1"
-if "%~1"=="" (set "vs_version=2022")
+if "%~1"=="" (set "vs_version=18")
 
 @echo on
 

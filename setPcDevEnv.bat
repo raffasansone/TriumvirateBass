@@ -5,7 +5,7 @@ SET "de_projectdir=%cd%"
 SET "de_projectdrive=%~d0"
 
 :: find the folder for visual studio - sets vsdir variable
-echo vs version requested: %vs_version%
+echo Vs version requested: %vs_version%
 
 if exist "%programfiles%\Microsoft Visual Studio\%vs_version%\Community" (
 	echo Vs Community detected
@@ -20,6 +20,8 @@ if exist "%programfiles%\Microsoft Visual Studio\%vs_version%\Community" (
 			SET "vsdir=%programfiles%\Microsoft Visual Studio\%vs_version%\Enterprise"
 		) else (
 			echo "WARNING - No edition of Visual Studio %vs_version% was detected, is it installed?"
+			echo "To build for a specific VS version, call setup_pc.bat followed by the number of your version:"
+			echo "2017 - 2019 - 2022 supported."
 		)
 	)
 )
