@@ -21,13 +21,9 @@ SET "de_projectdrive=%~d0"
 :: this replaces the call "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\vcvars32.bat"
 call "%vsdir%\Common7\Tools\VsDevCmd.bat"
 
-echo Step 1 ok
-
 :: restore the drive letter after VsDevCmd.bat sets it to C:
 %de_projectdrive%
 CD %de_projectdir%
-
-echo step 2 ok
 
 set res="2026"
 if %vs_version%=="2017" set res="2017"
@@ -35,11 +31,7 @@ if %vs_version%=="2019" set res="2019"
 if %vs_version%=="2022" set res="2022"
 if %vs_version%=="18"   set res="2026"
 
-echo Step 3 ok
-
 pushd juce\extras\Projucer\Builds\VisualStudio%res%
-
-echo Step 4 ok
 
 :: build the projucer
 msbuild Projucer.sln

@@ -43,6 +43,7 @@ public:
     {
         setLookAndFeel(&lnf);
         gridAlreadyVisible = false;
+        setName("slider");
     }
 
     ~RaffaLinearSlider()
@@ -51,6 +52,8 @@ public:
     }
 
     bool hitTest(int x, int y) override;
+    double proportionOfLengthToValue(double proportion) override;
+    double valueToProportionOfLength(double value) override;
 
     //void paint(juce::Graphics& g) override;
     juce::String getTextFromValue(double value) override;

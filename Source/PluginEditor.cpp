@@ -101,11 +101,8 @@ TriumvirateBassAudioProcessorEditor::TriumvirateBassAudioProcessorEditor(Triumvi
     {
         addAndMakeVisible(comp);
     }
-    //cabinetToggleButton.setVisible(true);
-    //preferencesPanel.addAndMakeVisible(cabinetToggleButton);
-    //addAndMakeVisible(preferencesPanel);
    
-    //preferencesPanel.setVisible(false);
+    preferencesPanel.setVisible(false);
 
     dryWetSlider.setPopupDisplayEnabled(true, true, this);
 

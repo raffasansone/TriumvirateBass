@@ -164,42 +164,81 @@ public:
         // And use our item factory to add a set of default icons to it...
         toolbar.addDefaultItems(factory);
 
-        addAndMakeVisible(cabinetToggleButton);
-        addAndMakeVisible(cabinetLabel);
-        addAndMakeVisible(cabinetDescription);
-        addChildComponent(equalizerBox);
-        addChildComponent(lowPassFreqSlider);
-        addChildComponent(midHighPassFreqSlider);
-        addChildComponent(midLowPassFreqSlider);
-        addChildComponent(highPassFreqSlider);
-        addChildComponent(crossoverDescription);
+        auto lowLabelFunction = [this]()
+            {
+                lowLabel.setText(juce::String(lowPassFreqSlider.getValue()) + " Hz LP",
+                    juce::dontSendNotification);
+            };
+
+        auto highLabelFunction = [this]()
+            {
+                highLabel.setText(juce::String(highPassFreqSlider.getValue()) + " Hz HP",
+                    juce::dontSendNotification);
+            };
+
+        auto midLabelFunction = [this]()
+            {
+                midLabel.setText(juce::String(midHighPassFreqSlider.getValue()) + " to " + juce::String(midLowPassFreqSlider.getValue()) + " Hz BP",
+                    juce::dontSendNotification);
+            };
+
+        lowPassFreqSlider.onValueChange = lowLabelFunction;
+        highPassFreqSlider.onValueChange = highLabelFunction;
+        midHighPassFreqSlider.onValueChange = midLabelFunction;
+        midLowPassFreqSlider.onValueChange = midLabelFunction;
+
+        lowLabelFunction();
+        midLabelFunction();
+        highLabelFunction();
+
+        cabinetPage.emplace_back(&cabinetToggleButton);
+        cabinetPage.emplace_back(&cabinetLabel);
+        cabinetPage.emplace_back(&cabinetDescription);
+
+        for (auto* c : cabinetPage) {
+            addAndMakeVisible(c);
+        }
+
+        crossoverPage.emplace_back(&equalizerBox);
+        crossoverPage.emplace_back(&lowPassFreqSlider);
+        crossoverPage.emplace_back(&lowLabel);
+        crossoverPage.emplace_back(&midHighPassFreqSlider);
+        crossoverPage.emplace_back(&midLowPassFreqSlider);
+        crossoverPage.emplace_back(&midLabel);
+        crossoverPage.emplace_back(&highPassFreqSlider);
+        crossoverPage.emplace_back(&highLabel);
+        crossoverPage.emplace_back(&crossoverDescription);
+
+        for (auto* c : crossoverPage) {
+            addChildComponent(c);
+        }
     }
 
     void buttonClicked(juce::Button* b) override{
         if (auto* button = dynamic_cast<juce::ToolbarButton*>(b)) {
             if (button->getItemId() == SettingsToolbarItemFactory::SettingsToolbarItemIds::cabinet) {
-                cabinetToggleButton.setVisible(true);
-                cabinetLabel.setVisible(true);
-                cabinetDescription.setVisible(true);
-
-                equalizerBox.setVisible(false);
-                lowPassFreqSlider.setVisible(false);
-                midHighPassFreqSlider.setVisible(false);
-                midLowPassFreqSlider.setVisible(false);
-                highPassFreqSlider.setVisible(false);
-                crossoverDescription.setVisible(false);
+                
+                for (auto* c : cabinetPage) {
+                    c->setVisible(true);
+                    c->toFront(true);
+                }
+                
+                for (auto* c : crossoverPage) {
+                    c->setVisible(false);
+                    c->toBack();
+                }
             }
             else if (button->getItemId() == SettingsToolbarItemFactory::SettingsToolbarItemIds::crossover) {
-                cabinetToggleButton.setVisible(false);
-                cabinetLabel.setVisible(false);
-                cabinetDescription.setVisible(false);
 
-                equalizerBox.setVisible(true);
-                lowPassFreqSlider.setVisible(true);
-                midHighPassFreqSlider.setVisible(true);
-                midLowPassFreqSlider.setVisible(true);
-                highPassFreqSlider.setVisible(true);
-                crossoverDescription.setVisible(true);
+                for (auto* c : crossoverPage) {
+                    c->setVisible(true);
+                    c->toFront(true);
+                }
+
+                for (auto* c : cabinetPage) {
+                    c->setVisible(false);
+                    c->toBack();
+                }
             }
         }
     }
@@ -227,16 +266,23 @@ public:
         float xPadding = 50.f;
         float yPadding = 10.f;
 
-        int eqOffset = -310;
+        int eqOffset = -280;
+        int slidersOffset = -230;
         int descOffset = 40;
-        
+        int sliderHeight = 20;
+        int labelWidth = 100;
+        int labelHeight = 40;
+
         equalizerBox.setBounds(crossoverBounds.getX() + eqOffset, crossoverBounds.getY(), width, crossoverBounds.getHeight());
         equalizerBox.initAtPosition(xPadding, yPadding, width, height);
 
-        lowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-30, width, 100));//.removeFromTop(20));
-        midHighPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-10, width, 100));// .removeFromTop(20));
-        midLowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()-10, width, 100));// .removeFromTop(20));
-        highPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + eqOffset, crossoverBounds.getY()+10, width, 100));// .removeFromTop(20));
+        lowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset, crossoverBounds.getY()+10, width, sliderHeight));
+        lowLabel.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset - 80, crossoverBounds.getY(), labelWidth, labelHeight));
+        midHighPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset, crossoverBounds.getY()+30, width, sliderHeight));
+        midLowPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset, crossoverBounds.getY()+30, width, sliderHeight));
+        midLabel.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset-80, crossoverBounds.getY()+20, labelWidth, labelHeight));
+        highPassFreqSlider.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset, crossoverBounds.getY()+50, width, sliderHeight));
+        highLabel.setBounds(juce::Rectangle(crossoverBounds.getX() + slidersOffset-80, crossoverBounds.getY()+40, labelWidth, labelHeight));
 
         crossoverDescription.setBounds(crossoverBounds.getX() + descOffset, crossoverBounds.getY(), crossoverBounds.getWidth(), crossoverBounds.getHeight());
     }
@@ -244,11 +290,22 @@ public:
     void paint(juce::Graphics& g) override{
         juce::Component::paint(g);
         g.fillAll(juce::Colour::fromRGBA(0, 0, 0, 200));
-
-        //auto crossoverBounds = getLocalBounds().removeFromRight(440).reduced(20, 5);
-        //auto width = crossoverBounds.getWidth();
-        //int height = 60;
-        //auto logScaleBox = juce::Rectangle<int>(crossoverBounds.getX(), crossoverBounds.getY() - 20, width, height);
+        
+#ifdef DEBUG
+        int childNum = 0;
+        int toShow = JUCE_LIVE_CONSTANT(0);
+        for (auto* child : getChildren())
+        {
+            ++childNum;
+            if (childNum == toShow) {
+                g.setColour(juce::Colours::lime);
+                g.drawRect(child->getBounds());
+                g.drawText(juce::String(childNum)+ " " + child->getName(),
+                    child->getBounds(),
+                    juce::Justification::centred);
+            }
+        }
+#endif
     }
 
 private:
@@ -256,8 +313,8 @@ private:
 
     TriumvirateBassAudioProcessor& audioProcessor;
 
-    juce::Label cabinetLabel{ {}, "Enable Cabinet" };
-    juce::Label cabinetDescription{ {}, "This is the cabinet emulation. "
+    juce::Label cabinetLabel{ {"cabLabel"}, "Enable Cabinet"};
+    juce::Label cabinetDescription{ {"cabDes"}, "This is the cabinet emulation. "
     "If you use this plugin on its own, the switch should be enabled.\n"
     "Deactivate the switch if you are running into an amp simulation, and want to use this effect just as a pedal."};
     
@@ -265,14 +322,18 @@ private:
     juce::ButtonParameterAttachment
         cabinetToggleButtonAttachment;
     
-    juce::Label crossoverDescription{ {}, "This is the crossover section.\n"
-        "The pedal has individual, non linear filters.\n"
+    juce::Label crossoverDescription{ {"crossoverDes"}, "This is the crossover section.\n"
+        "Each band has individual, non linear filters.\n"
         "As such, it looks and sounds different from regular crossovers and produces unpredictable results."};
 
     RaffaLinearSlider highPassFreqSlider;
     RaffaLinearSlider lowPassFreqSlider;
     RaffaLinearSlider midHighPassFreqSlider;
     RaffaLinearSlider midLowPassFreqSlider;
+
+    juce::Label lowLabel{ "lowLabel" };
+    juce::Label midLabel{ "midLabel" };
+    juce::Label highLabel{ "highLabel" };
 
     RaffaEqualizerBox equalizerBox;
 
@@ -284,6 +345,9 @@ private:
         lowPassFreqSliderAttachment,
         midHighPassFreqSliderAttachment,
         midLowPassFreqSliderAttachment;
+
+    std::vector<juce::Component*> cabinetPage;
+    std::vector<juce::Component*> crossoverPage;
 
     //==============================================================================
     class SettingsToolbarItemFactory : public juce::ToolbarItemFactory

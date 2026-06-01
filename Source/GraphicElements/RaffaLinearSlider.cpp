@@ -13,7 +13,7 @@
 RaffaLinearSliderLookAndFeel::RaffaLinearSliderLookAndFeel()
 {
     setColour(juce::Slider::thumbColourId, juce::Colour(juce::uint8(240),240,240,0.5f));
-    setColour(juce::Slider::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::backgroundColourId, juce::Colours::darkgrey);
     setColour(juce::Slider::trackColourId, juce::Colours::transparentBlack);//juce::Colour(juce::uint8(32), 32, 32, 0.5f));
 }
 
@@ -24,8 +24,8 @@ int RaffaLinearSliderLookAndFeel::getSliderThumbRadius(juce::Slider& slider)
 }
 
 void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
-    int x, int y, int /*width*/, int height,
-    float /*sliderPos*/,
+    int x, int y, int width, int height,
+    float sliderPos,
     float /*minSliderPos*/,
     float /*maxSliderPos*/,
     const juce::Slider::SliderStyle style, juce::Slider& slider) {
@@ -45,43 +45,12 @@ void RaffaLinearSliderLookAndFeel::drawLinearSlider(juce::Graphics& g,
         float percentEnd = juce::mapFromLog10(end, 20.f, 20000.f);
         float percentValue = juce::mapFromLog10((float)ioslider->getValue(), 20.f, 20000.f);
 
-        float padding = 50.f;
         auto width1 = slider.getLocalBounds().getWidth();
         float newWidth = width1 * (percentEnd - percentStart);
-        float newX = width1 * percentStart + padding;
-        float newSliderPos = width1 * percentValue + padding;
+        float newX = width1 * percentStart;
+        float newSliderPos = width1 * percentValue;
 
         juce::LookAndFeel_V4::drawLinearSlider(g, static_cast<int>(newX), y, static_cast<int>(newWidth), height, newSliderPos, 0, 0, style, slider);
-
-        auto bounds = juce::Rectangle<float>(static_cast<float>(x), static_cast<float>(y), static_cast<float>(width1), static_cast<float>(height));
-        auto center = bounds.getCentre();
-        
-        juce::Rectangle<float> r;
-        r.setBounds(
-            float(slider.getLocalBounds().getX()), 
-            float(slider.getLocalBounds().getY()), 
-            float(slider.getLocalBounds().getWidth()), 
-            float(slider.getLocalBounds().getHeight()));
-
-        g.setFont(static_cast<float>(ioslider->getTextHeight()));
-        juce::String text = ioslider->getLabel() + ": " + ioslider->getDisplayString();
-        auto strWidth = juce::GlyphArrangement::getStringWidthInt(g.getCurrentFont(), text);
-
-        r.setSize(static_cast<float>(strWidth), static_cast<float>(ioslider->getTextHeight()));
-        r.setCentre(bounds.getCentre());
-        r.setY(r.getCentreY()-6);
-        if (ioslider->isAlignedRight()) {
-            r.setX(r.getRight()+36);
-        }
-        else {
-            r.setX(0);
-        }
-
-        //g.setColour(juce::Colours::green);
-        //g.drawRect(r);
-        
-        g.setColour(juce::Colours::white);
-        g.drawFittedText(text, r.toNearestInt(), juce::Justification::centred, 1);
     }
 }
 
@@ -98,14 +67,24 @@ bool RaffaLinearSlider::hitTest(int x, int y)
     jassert(start > 20.f);
     jassert(end < 20000.f);
 
+    int margin = 20;
     float percentStart = juce::mapFromLog10(start, 20.f, 20000.f);
-    //float percentEnd = juce::mapFromLog10(end, 20.f, 20000.f);
-    
-    float padding = 40.f;
-    //float newWidth = getLocalBounds().getWidth() * (percentEnd - percentStart);
-    float newX = getLocalBounds().getWidth() * percentStart + padding;
+    float newXStart = getLocalBounds().getWidth() * percentStart;
 
-    return y > centre.getY()-10 && y < centre.getY()+10 && x > newX && x < getLocalBounds().getWidth();
+    float percentEnd = juce::mapFromLog10(end, 20.f, 20000.f);
+    float newXEnd = getLocalBounds().getWidth() * percentEnd;
+
+    return y > centre.getY()-10 && y < centre.getY()+10 && x > (newXStart - margin) && x < (newXEnd + margin);
+}
+
+double RaffaLinearSlider::valueToProportionOfLength(double value)
+{
+    return (std::log(value / 20.0)/ std::log(20000.0 / 20.0));
+}
+
+double RaffaLinearSlider::proportionOfLengthToValue(double proportion)
+{
+    return 20.0 * std::pow(20000.0 / 20.0, proportion);
 }
 
 juce::String RaffaLinearSlider::getTextFromValue(double /*value*/)
